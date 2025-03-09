@@ -21,5 +21,6 @@ built with angular and firebase
 - communicate in the comments what parts you are working on
 
 ## general todo
+- ucsd msa example site: https://msaucsd.com/#
 - need to find template for UI
 - ask slack for emails to add to firebase 
