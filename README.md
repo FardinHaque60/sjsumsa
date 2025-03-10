@@ -9,6 +9,10 @@ visit the prototype site at [`firebase.com`](TODO) or [`firebase.app.com`](TODO)
 
 the real site will be deployed at [`sjsumsa.org`](https://sjsumsa.org/)
 
+## running the app
+- `cd frontend`
+- `ng serve` (install angular command line tools if you havent already `npm install -g @angular/cli`)
+
 ## tech stack
 built with angular and firebase
 
