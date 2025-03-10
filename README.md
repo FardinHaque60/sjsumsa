@@ -11,6 +11,7 @@ visit the prototype site at [`firebase.com`](TODO) or [`firebase.app.com`](TODO)
 the real site will be deployed at [`sjsumsa.org`](https://sjsumsa.org/)
 
 ## running the app
+- TODO: fardin, pull frontend contents out onto main repo. no need for backend so frontend can take entire repo
 - `cd frontend`
 - `ng serve` (install angular command line tools if you havent already `npm install -g @angular/cli`)
 
@@ -18,6 +19,7 @@ the real site will be deployed at [`sjsumsa.org`](https://sjsumsa.org/)
 built with angular and firebase
 - TODO: fardin will working on initializing firebase config with this
     - note: spark plan (firebase free tier) only allows us for basic auth and data store (up to 1GB) which should be sufficient for this use case
+    - add version information for ng, node, etc.
 
 ## devs see below
 - read up on the stack we are using above, we can look to schedule a meeting sometime soon to discuss more about it.
