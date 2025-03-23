@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-homepage',
-  imports: [],
+  imports: [NavbarComponent],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css'
 })
