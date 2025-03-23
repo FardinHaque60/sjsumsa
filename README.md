@@ -10,8 +10,14 @@ visit the prototype site at [`sjsumsa.vercel.app`](https://sjsumsa.vercel.app/)
 the real site will be deployed at [`sjsumsa.org`](https://sjsumsa.org/) once finished
 
 ## running locally
-- `npm install`
-- `ng serve` (install angular command line tools if you havent already `npm install -g @angular/cli`)
+## prerequisites
+- node installation (recommended to install node with [nvm](https://github.com/nvm-sh/nvm))
+- angular command line tools (`npm install -g @angular/cli`)
+built with `node 22.14.0`, `npm 10.9.2`
+
+## run
+- `npm install` to install necessary packages
+- `ng serve` to run the app locally
 
 ## tech stack
 built with angular and supabase
