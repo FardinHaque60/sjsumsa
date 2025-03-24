@@ -10,5 +10,21 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './homepage.component.css'
 })
 export class HomepageComponent {
-
+  // TODO, make api request to get prayer times
+  adhanTimes = {
+    Fajr: 'X:XX',
+    Dhuhr: 'X:XX',
+    ShafiAsr: 'X:XX',
+    HanafiAsr: 'X:XX',
+    Maghrib: 'X:XX',
+    Isha: 'X:XX'
+  };
+  iqamahTimes = {
+    Fajr: 'X:XX',
+    Dhuhr: 'X:XX',
+    ShafiAsr: 'X:XX',
+    HanafiAsr: 'X:XX',
+    Maghrib: 'X:XX',
+    Isha: 'X:XX'
+  }
 }
