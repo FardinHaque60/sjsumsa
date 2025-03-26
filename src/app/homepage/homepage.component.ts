@@ -3,7 +3,6 @@ import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from "../shared/footer/footer.component";
 import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from '../service/api.service';
-import { format } from 'path';
 
 @Component({
   selector: 'app-homepage',
@@ -13,24 +12,24 @@ import { format } from 'path';
 })
 export class HomepageComponent {
   constructor(private apiService: ApiService) {};
+  tempVar = "";
 
-  // TODO, make api request to get prayer times
   adhanTimes = {
-    Fajr: 'X:XX',
-    Dhuhr: 'X:XX',
-    ShafiAsr: 'X:XX',
-    HanafiAsr: 'X:XX',
-    Maghrib: 'X:XX',
-    Isha: 'X:XX'
+    fajr: 'X:XX',
+    dhuhr: 'X:XX',
+    shafiAsr: 'X:XX',
+    hanafiAsr: 'X:XX',
+    maghrib: 'X:XX',
+    isha: 'X:XX'
   };
   iqamahTimes = {
-    Fajr: '6:35 AM',
-    Dhuhr: '1:30 PM',
-    Dhuhr2: '3:00 PM',
-    ShafiAsr: '5:00 PM',
-    HanafiAsr: '5:45 PM',
-    Maghrib: 'Loading...',
-    Isha: '8:45 PM'
+    fajr: '6:35 AM',
+    dhuhr: '1:30 PM',
+    dhuhr2: '3:00 PM',
+    shafiAsr: '5:00 PM',
+    hanafiAsr: '5:45 PM',
+    maghrib: 'Loading...',
+    isha: '8:45 PM'
   };
 
   formatDate(date: Date): string {
@@ -61,7 +60,8 @@ export class HomepageComponent {
     return pstDate;
   };
 
-  ngOnInit() {
+  fetchPrayerTimesFromApi() {
+    console.log('fetching prayer times from api');
     const currentDate = this.getCurrentPSTDate();
     const formattedDate = this.formatDate(currentDate); // TODO add this to api url
 
@@ -70,7 +70,6 @@ export class HomepageComponent {
     this.apiService.getRegRequest(prayerTimeApiURL)
       .subscribe({
         next: (response) => {
-          console.log(response);
           const prayerTimings = response.data.timings;
           /* 
             very strange bug in javascript where looping through the prayerTimings object 
@@ -85,12 +84,12 @@ export class HomepageComponent {
           } */
 
           // set prayer times
-          this.adhanTimes.Fajr = this.convertTo12HourFormat(prayerTimings.Fajr);
-          this.adhanTimes.Dhuhr = this.convertTo12HourFormat(prayerTimings.Dhuhr);
-          this.adhanTimes.ShafiAsr = this.convertTo12HourFormat(prayerTimings.Asr);
-          this.adhanTimes.Maghrib = this.convertTo12HourFormat(prayerTimings.Maghrib);
-          this.iqamahTimes.Maghrib = this.convertTo12HourFormat(prayerTimings.Maghrib);
-          this.adhanTimes.Isha = this.convertTo12HourFormat(prayerTimings.Isha);
+          this.adhanTimes.fajr = this.convertTo12HourFormat(prayerTimings.Fajr);
+          this.adhanTimes.dhuhr = this.convertTo12HourFormat(prayerTimings.Dhuhr);
+          this.adhanTimes.shafiAsr = this.convertTo12HourFormat(prayerTimings.Asr);
+          this.adhanTimes.maghrib = this.convertTo12HourFormat(prayerTimings.Maghrib);
+          this.iqamahTimes.maghrib = this.convertTo12HourFormat(prayerTimings.Maghrib);
+          this.adhanTimes.isha = this.convertTo12HourFormat(prayerTimings.Isha);
         },
         error: (error) => {
           console.error(error);
@@ -102,11 +101,29 @@ export class HomepageComponent {
     this.apiService.getRegRequest(hanafiAsrTimeApiURL)
       .subscribe({
         next: (response) => {
-          console.log(response);
           const prayerTimings = response.data.timings;
 
-          this.adhanTimes.HanafiAsr = this.convertTo12HourFormat(prayerTimings.Asr);
+          this.adhanTimes.hanafiAsr = this.convertTo12HourFormat(prayerTimings.Asr);
         },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+  }
+
+  ngOnInit() {
+    // TODO add supabase methods to push prayer time to db if not current date
+    // if it has current date just pull it from db
+    // see homepage component.html for todo on adding tooltip
+    this.fetchPrayerTimesFromApi();
+    // write to db
+    console.log("test call to db");
+    this.apiService.getPrayerTimes()
+      .subscribe({
+        next: (response) => {
+          this.tempVar = JSON.stringify(response);
+        }
+        , 
         error: (error) => {
           console.error(error);
         }

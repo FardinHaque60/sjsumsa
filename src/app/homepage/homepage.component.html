@@ -1,7 +1,7 @@
 <div class="relative h-screen overflow-hidden">
-  <img class="absolute inset-0 w-full h-full object-cover animate-zoom-in" src="/assets/images/temp_bg.jpg" style="transform-origin: center;">
+  <img class="absolute inset-0 w-full h-full object-cover animate-zoom-in" src="/assets/images/sjsu_tower_bg.jpg" style="transform-origin: center;">
   <!-- Dark overlay -->
-  <div class="absolute inset-0 bg-black opacity-18"></div>
+  <div class="absolute inset-0 bg-black opacity-20"></div>
 
   <!-- Navbar on top -->
   <app-navbar class="absolute top-0 left-0 w-full z-10"></app-navbar>
@@ -24,7 +24,9 @@
 <!-- Section 1 -->
 <section class="w-full py-16 bg-white text-gray-800 flex justify-center">
     <div class="max-w-4xl text-center">
+      <!-- TODO add tool tip with information on how calculation was done -->
       <h2 class="text-3xl font-bold mb-10">Daily Prayer Info</h2>
+      <p>{{tempVar}}</p>
       <div class="flex flex-row items-center justify-evenly space-x-10">
         <!-- prayer times table -->
         <div class="text-lg">
@@ -64,12 +66,12 @@
                 </td>
                 <td class="p-4 border-b border-slate-200">
                   <p class="block text-slate-800">
-                    {{adhanTimes.Fajr}}
+                    {{adhanTimes.fajr}}
                   </p>
                 </td>
                 <td class="p-4 border-b border-slate-200">
                   <p class="block text-slate-800">
-                    {{iqamahTimes.Fajr}}
+                    {{iqamahTimes.fajr}}
                   </p>
                 </td>
               </tr>
@@ -86,12 +88,15 @@
                 </td>
                 <td class="p-4 border-b border-slate-200">
                   <p class="block  text-slate-800">
-                    {{adhanTimes.Dhuhr}}
+                    {{adhanTimes.dhuhr}}
                   </p>
                 </td>
                 <td class="p-4 border-b border-slate-200">
                   <p class="block text-slate-800">
-                    {{iqamahTimes.Dhuhr}}
+                    {{iqamahTimes.dhuhr}}
+                  </p>
+                  <p class="block text-slate-800">
+                    {{iqamahTimes.dhuhr2}}
                   </p>
                 </td>
               </tr>
@@ -108,18 +113,18 @@
                 </td>
                 <td class="p-4 border-b border-slate-200">
                   <p class="block text-slate-800">
-                    {{adhanTimes.ShafiAsr}} (Shafi)
+                    {{adhanTimes.shafiAsr}} (Shafi)
                   </p>
                   <p class="block text-slate-800">
-                    {{adhanTimes.HanafiAsr}} (Hanafi)
+                    {{adhanTimes.hanafiAsr}} (Hanafi)
                   </p>
                 </td>
                 <td class="p-4 border-b border-slate-200">
                   <p class="block text-slate-800">
-                    {{iqamahTimes.ShafiAsr}} (Shafi)
+                    {{iqamahTimes.shafiAsr}} (Shafi)
                   </p>
                   <p class="block text-slate-800">
-                    {{iqamahTimes.HanafiAsr}} (Hanafi)
+                    {{iqamahTimes.hanafiAsr}} (Hanafi)
                   </p>
                 </td>
               </tr>
@@ -136,12 +141,12 @@
                 </td>
                 <td class="p-4 border-b border-slate-200">
                   <p class="block text-slate-800">
-                    {{adhanTimes.Maghrib}}
+                    {{adhanTimes.maghrib}}
                   </p>
                 </td>
                 <td class="p-4 border-b border-slate-200">
                   <p class="block text-slate-800">
-                    {{iqamahTimes.Maghrib}}
+                    {{iqamahTimes.maghrib}}
                   </p>
                 </td>
               </tr>
@@ -158,12 +163,12 @@
                 </td>
                 <td class="p-4">
                   <p class="block text-slate-800">
-                    {{adhanTimes.Isha}}
+                    {{adhanTimes.isha}}
                   </p>
                 </td>
                 <td class="p-4">
                   <p class="block text-slate-800">
-                    {{iqamahTimes.Isha}}
+                    {{iqamahTimes.isha}}
                   </p>
                 </td>
               </tr>
