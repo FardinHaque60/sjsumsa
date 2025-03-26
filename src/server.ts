@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv';
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -7,6 +8,7 @@ import {
 import express from 'express';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
@@ -14,16 +16,56 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
+/* 
  *
- * Example:
- * ```ts
- * app.get('/api/**', (req, res) => {
- *   // Handle API request
- * });
- * ```
+ * API endpoints for supabase CRUD operations below 
+ * 
+ */
+
+dotenv.config(); // Load environment variables from .env file
+
+const supabaseUrl = process.env['SUPABASE_URL'];
+const supabaseKey = process.env['SUPABASE_KEY'];
+
+console.log('Supabase URL:', supabaseUrl);
+console.log('Supabase Key:', supabaseKey);
+
+// Ensure they are loaded
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Supabase environment variables are missing! Cannot make DB requests.');
+  process.exit(1);
+}
+
+export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
+
+app.get('/api/getPrayerTimes', async (_, res) => {
+  try {
+    const { data, error } = await supabase.from('prayerTimes').select('*');
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).json({ error: 'An unexpected error occurred.' });
+  }
+});
+
+app.get('/api/getPrayerTimes', async (_, res) => {
+  try {
+    const { data, error } = await supabase.from('prayerTimes').select('*');
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).json({ error: 'An unexpected error occurred.' });
+  }
+});
+
+/* 
+ *
+ * default ssr handling for angular app below
+ *    
  */
 
 /**

@@ -16,4 +16,12 @@ export class ApiService {
   postRegRequest(endpoint: string, payload: any): Observable<any> {
     return this.http.post<any>(endpoint, payload);
   }
+
+  getPrayerTimes(): Observable<any> {
+    return this.http.get('api/getPrayerTimes');
+  }
+
+  postPrayerTimes(payload: any): Observable<any> {
+    return this.http.post('api/postPrayerTimes', payload);
+  }
 }
