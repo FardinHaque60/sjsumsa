@@ -5,11 +5,11 @@
     "rewrites": [
         {
             "source": "/(.*)",
-            "destination": "dist/sjsumsa/server/server.mjs"
+            "destination": "/api"
         },
         {
             "source": "/api/(.*)",
-            "destination": "dist/sjsumsa/server/server.mjs"
+            "destination": "/api"
         }
     ],
     "functions": {
