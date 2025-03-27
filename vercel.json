@@ -1,8 +1,16 @@
 {
+    "version": 2,
+    "public": true,
+    "name": "sjsumsa",
     "rewrites": [
         {
-            "source": "/api/(.*)",
-            "destination": "/server.ts"
+            "source": "/(.*)",
+            "destination": "/api"
         }
-    ]
+    ],
+    "functions": {
+        "api/index.js": {
+            "includeFiles": "dist/sjsumsa/**"
+        }
+    }
 }
