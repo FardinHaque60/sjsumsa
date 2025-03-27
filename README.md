@@ -14,6 +14,7 @@ the real site will be deployed at [`sjsumsa.org`](https://sjsumsa.org/) once fin
 - node installation (recommended to install node with [nvm](https://github.com/nvm-sh/nvm))
 - angular command line tools (`npm install -g @angular/cli`)
 built with `node 22.14.0`, `npm 10.9.2`
+- create a file called `.env` with the environments variables listed [here](https://docs.google.com/document/d/1BVvBl_f1DxTTlQdu-41vZeRbrIK0G2NL0WzjKLT3e_A/edit?usp=sharing)
 
 ## run
 - `npm install` to install necessary packages
