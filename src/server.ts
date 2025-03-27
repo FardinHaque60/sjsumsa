@@ -17,55 +17,60 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 /* 
- *
  * API endpoints for supabase CRUD operations below 
- * 
  */
+app.use(express.json());
 
 dotenv.config(); // Load environment variables from .env file
 
 const supabaseUrl = process.env['SUPABASE_URL'];
 const supabaseKey = process.env['SUPABASE_KEY'];
 
-console.log('Supabase URL:', supabaseUrl);
-console.log('Supabase Key:', supabaseKey);
-
 // Ensure they are loaded
 if (!supabaseUrl || !supabaseKey) {
-  console.error('Supabase environment variables are missing! Cannot make DB requests.');
+  console.error('SERVER: Supabase environment variables are missing! Cannot make DB requests.');
   process.exit(1);
 }
 
 export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
 
-app.get('/api/getPrayerTimes', async (_, res) => {
+app.get('/api/getPrayerTimes', async (req, res) => {
+  // fetch all prayer times that have date for today
+  const { todayDate } = req.query;
+  console.log('SERVER: checking db for prayer times today:', todayDate);
   try {
-    const { data, error } = await supabase.from('prayerTimes').select('*');
+    const { data, error } = await supabase
+      .from('prayerTimes')
+      .select('*')
+      .eq('date', todayDate);
     if (error) {
       return res.status(500).json({ error: error.message });
     }
     return res.json(data);
   } catch (err) {
-    return res.status(500).json({ error: 'An unexpected error occurred.' });
+    return res.status(500).json({ error: 'SERVER: error getting prayer times from db' });
   }
 });
 
-app.get('/api/getPrayerTimes', async (_, res) => {
+app.post('/api/postPrayerTimes', async (req, res) => {
+  const { prayerTimes } = await req.body;
+
+  console.log('SERVER: writing prayer times to db:', JSON.stringify(prayerTimes));
   try {
-    const { data, error } = await supabase.from('prayerTimes').select('*');
+    const { data, error } = await supabase
+      .from('prayerTimes')
+      .insert(prayerTimes);
     if (error) {
       return res.status(500).json({ error: error.message });
-    }
-    return res.json(data);
+    } 
+    return res.json("SERVER successfully wrote to db");
   } catch (err) {
-    return res.status(500).json({ error: 'An unexpected error occurred.' });
-  }
+    return res.status(500).json({ error: 'SERVER: error writing prayer times to db' });
+  } 
 });
 
 /* 
- *
- * default ssr handling for angular app below
- *    
+ * default ssr handling for angular app below   
  */
 
 /**
@@ -98,7 +103,7 @@ app.use('/**', (req, res, next) => {
 if (isMainModule(import.meta.url)) {
   const port = process.env['PORT'] || 4000;
   app.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
+    console.log(`SERVER: Node Express server listening on http://localhost:${port}`);
   });
 }
 
