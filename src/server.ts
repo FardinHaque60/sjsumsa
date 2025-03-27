@@ -32,7 +32,7 @@ if (!supabaseUrl || !supabaseKey) {
   process.exit(1);
 }
 
-export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
+const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
 
 app.get('/api/getPrayerTimes', async (req, res) => {
   // fetch all prayer times that have date for today
@@ -105,9 +105,42 @@ if (isMainModule(import.meta.url)) {
   app.listen(port, () => {
     console.log(`SERVER: Node Express server listening on http://localhost:${port}`);
   });
-}
+} 
 
 /**
  * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
  */
 export const reqHandler = createNodeRequestHandler(app);
+
+export default reqHandler;
+
+// module.exports = app;
+
+/* Vercel serverless function export
+export default async function handler(req: any, res: any) {
+  // Set up CORS if needed
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+
+  // Handle OPTIONS request
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // Use the existing request handler
+  await new Promise<void>((resolve, reject) => {
+    app(req, res, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+} */

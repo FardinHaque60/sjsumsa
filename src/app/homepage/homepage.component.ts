@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, PLATFORM_ID, Inject, InjectionToken } from '@angular/core';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from "../shared/footer/footer.component";
 import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from '../service/api.service';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-homepage',
@@ -15,7 +16,7 @@ import { firstValueFrom } from 'rxjs';
   standalone: true,
 })
 export class HomepageComponent {
-  constructor(private cdRef: ChangeDetectorRef, private apiService: ApiService) {};
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private cdRef: ChangeDetectorRef, private apiService: ApiService) {};
   todayDate: string = ''; // todays date in DD-MM-YYYY format
 
   adhanTimes = {
@@ -142,7 +143,7 @@ export class HomepageComponent {
     const getPrayerTimesTodayApiUrl = "api/getPrayerTimes?todayDate=" + this.todayDate;
 
     console.log("CLIENT: checking db if it has prayer time for today (DD-MM-YYYY): ", this.todayDate);
-    if (typeof window !== 'undefined') {
+    if (isPlatformBrowser(this.platformId)) {
       this.apiService.getRequest(getPrayerTimesTodayApiUrl)
         .subscribe({
           next: (response) => {
