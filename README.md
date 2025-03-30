@@ -11,10 +11,10 @@ the real site will be deployed at [`sjsumsa.org`](https://sjsumsa.org/) once fin
 
 ## running locally
 - `npm install`
-- `ng serve` (install angular command line tools if you havent already `npm install -g @angular/cli`)
+- `npm run start` or `npm run dev` to run it in dev mode (less strict)
 
 ## tech stack
-built with angular and supabase
+built with next.js and mongodb
 
 ## developers
 check out [issue #12](https://github.com/FardinHaque60/sjsumsa/issues/12) for steps to contribute
