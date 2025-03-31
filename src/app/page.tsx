@@ -29,7 +29,7 @@ export default function Home() {
     isha: "7:45 PM" 
   };
 
-  // on init make api call to get prayer times
+  // TODO on init make api call to get prayer times
 
   return (
     <div>
