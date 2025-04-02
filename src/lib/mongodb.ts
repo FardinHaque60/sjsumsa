@@ -1,48 +1,38 @@
+// boiler plate to connect to mongo db
 import mongoose from "mongoose";
+import { GridFSBucket } from "mongodb";
 
-const MONGODB_URI = process.env["MONGODB_URI"] || "";
+let bucket: GridFSBucket;
 
-if (!MONGODB_URI) {
-  throw new Error("MONGODB_URI is not defined in environment variables");
-}
+export const ConnectDB = async () => {
+    try {
+        if (mongoose.connection.readyState === 1) {
+            console.log("MongoDB already connected");
+            return;
+        }
+        else {
+            await mongoose.connect(`${process.env['MONGODB_URI']}`);
+            console.log("MongoDB connected");
+        }
 
-export const connectDB = async () => {
-  try {
-    if (mongoose.connection.readyState === 1) {
-      console.log("✅ Using existing database connection");
-      return;
+        const db = mongoose.connection.db;
+        if (!db) {
+            throw new Error("Failed to get the database connection");
+        }
+
+        // create bucket for saving images
+        bucket = new GridFSBucket(db, { bucketName: "images" });
+        console.log("GridFS bucket initialized");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+        throw error;
     }
-    await mongoose.connect(MONGODB_URI);
-    console.log("MongoDB connected");
-  } catch (error) {
-    console.error("MongoDB connection error:", error);
-  }
-};
-
-/*
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = process.env['MONGODB_URI'];
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
 }
-run().catch(console.dir);
-*/
+
+// function for getting bucket when needing to reading and writing images
+export const getBucket = () => {
+    if (!bucket) {
+        throw new Error("GridFS bucket is not initialized. Connect to MongoDB first.");
+    }
+    return bucket;
+};
