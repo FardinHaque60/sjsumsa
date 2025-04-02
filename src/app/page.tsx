@@ -1,42 +1,138 @@
+// look into best practices for handling state variables
+// updating values and reading them after
+
+'use client';
+import './styles/styles.css'; 
+
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
 import Image from "next/image";
+
+import { adhanTimesInt, iqamahTimesInt, adhanApiInt, adhanDbInt } from "@/interfaces/prayerTimeInt";
+import { getCurrentPSTDate, formatDate, convertTo12HourTime } from '@/lib/dates/dateHelper';
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; // Assuming you have a Footer component
 import TowerBg from "@/assets/sjsu_tower_bg.jpg";
 import SalamArt from "@/assets/salam_art.png"; 
-import FajrIcon from "@/assets/fajr_icon.png"; 
-import DhuhrIcon from "@/assets/dhuhr_icon.png";
-import AsrIcon from "@/assets/asr_icon.png"; 
-import MaghribIcon from "@/assets/maghrib_icon.png";
-import IshaIcon from "@/assets/isha_icon.png"; 
 
 export default function Home() {
-  const adhanTimes = {
-    fajr: "5:30 AM",
-    dhuhr: "1:00 PM",
-    shafiAsr: "3:30 PM", 
-    hanafiAsr: "4:30 PM", 
-    maghrib: "6:00 PM",
-    isha: "7:30 PM" 
+  const [adhanTimes, setAdhanTimes] = useState<adhanTimesInt>({
+    fajr: "X:XX",
+    dhuhr: "X:XX",
+    shafiAsr: "X:XX", 
+    hanafiAsr: "X:XX", 
+    maghrib: "X:XX",
+    isha: "X:XX" 
+  });
+
+  const [iqamahTimes, setIqamahTimes] = useState<iqamahTimesInt>({
+    fajr: '6:35 AM',
+    dhuhr: '1:30 PM',
+    dhuhr2: '3:00 PM',
+    shafiAsr: '5:00 PM',
+    hanafiAsr: '5:45 PM',
+    maghrib: 'XX:XX',
+    isha: '8:45 PM'
+  });
+
+  // update the cache holding prayer time for today
+  const updateAdhanTimesDb = async (adhanTimes: adhanApiInt, hanafiAsrTime: string) => {
+    const prayerTimings = adhanTimes.timings;
+    const adhanTimesObj = {
+      fajr: prayerTimings.Fajr,
+      dhuhr: prayerTimings.Dhuhr,
+      shafiAsr: prayerTimings.Asr,
+      hanafiAsr: hanafiAsrTime,
+      maghrib: prayerTimings.Maghrib,
+      isha: prayerTimings.Isha,
+      date: adhanTimes.date.gregorian.date,
+    } 
+    try {
+      const response = await axios.post("api/adhanTimes", adhanTimesObj);
+      console.log("Adhan times updated in DB:", response.data);
+    } catch (error) {
+      console.error('Error updating adhan times in DB:', error);
+    }
   };
 
-  const iqamahTimes = {
-    fajr: "5:45 AM", 
-    dhuhr: "1:15 PM",
-    dhuhr2: "2:45 PM",
-    shafiAsr: "3:45 PM",
-    hanafiAsr: "4:45 PM",
-    maghrib: "6:15 PM",
-    isha: "7:45 PM" 
+  // sets the table for prayer time state variables
+  const setPrayerTable = (prayerTimes: adhanDbInt, hanafiAsrTime: string) => {
+    // update state variables
+    setAdhanTimes({
+      ...adhanTimes,
+      fajr: convertTo12HourTime(prayerTimes.fajr),
+      dhuhr: convertTo12HourTime(prayerTimes.dhuhr),
+      shafiAsr: convertTo12HourTime(prayerTimes.shafiAsr),
+      hanafiAsr: convertTo12HourTime(hanafiAsrTime),
+      maghrib: convertTo12HourTime(prayerTimes.maghrib),
+      isha: convertTo12HourTime(prayerTimes.isha)
+    });
+    setIqamahTimes({
+      ...iqamahTimes,
+      maghrib: convertTo12HourTime(prayerTimes.maghrib),
+    });
   };
 
-  // TODO on init make api call to get prayer times
+  // fetches prayer times from api and calles updateAdhanTimesDb to update db
+  const fetchPrayerTimes = async (prayerTimesApiUrl: string, hanafiAsrApiUrl: string) => {
+    try {
+      const response = await axios.get(prayerTimesApiUrl);
+      const hanafiAsrResponse = await axios.get(hanafiAsrApiUrl);
+
+      let prayerTimes = response.data.data;
+      const hanafiAsrTime = hanafiAsrResponse.data.data.timings.Asr;
+
+      // update cache in db
+      const deleteResult = await axios.delete("api/adhanTimes"); // delete old entry
+      if (!deleteResult.data.success) {
+        console.error("Error deleting old adhan times from db");
+      }
+      updateAdhanTimesDb(prayerTimes, hanafiAsrTime);
+
+      // set table render of prayer times
+      prayerTimes = prayerTimes.timings;
+      const prayerTimesObj = {
+        fajr: prayerTimes.Fajr,
+        dhuhr: prayerTimes.Dhuhr,
+        shafiAsr: prayerTimes.Asr,
+        maghrib: prayerTimes.Maghrib,
+        isha: prayerTimes.Isha,
+      }
+      setPrayerTable(prayerTimesObj, hanafiAsrTime);
+
+    } catch (error) {
+      console.error('Error fetching prayer times from api:', error);
+    } 
+  };
+
+  useEffect(() => {
+    const currentDate = getCurrentPSTDate();
+    const todayDate = formatDate(currentDate);
+    const getPrayerTimesTodayApiUrl = "api/adhanTimes?todayDate=" + todayDate;
+    const prayerTimesApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ`;
+    const hanafiAsrApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ&school=1`
+
+    const checkCache = async () => {
+      const response = await axios.get(getPrayerTimesTodayApiUrl); // check db if entry for today exists
+      const adhanTimesData = response.data;
+      if (adhanTimesData.success) { // if entry exists, set table with response data
+        console.log("CLIENT: Loading adhan times from db");
+        setPrayerTable(adhanTimesData.data, adhanTimesData.data.hanafiAsr);
+      } else { // if entry does not exist fetch new entry from api
+        fetchPrayerTimes(prayerTimesApiUrl, hanafiAsrApiUrl);
+      }
+    };
+
+    checkCache();
+  }, []);
 
   return (
     <div>
       <div className="relative h-screen overflow-hidden">
         <Image 
-          className="absolute inset-0 w-full h-full object-cover animate-zoom-in"
-          style={{ transform: "scale(1.1)", transition: "transform 10s ease-in-out" }} // add transform to zoom in and out slowly
+          className="absolute inset-0 w-full h-full object-cover animate-zoom-loop"
           src={TowerBg}
           alt="SJSU Tower Background"
         />
@@ -98,7 +194,9 @@ export default function Home() {
                       <td className="border-b border-slate-200">
                         <div className="flex items-center">
                           <Image
-                            src={FajrIcon} 
+                            src="/images/fajr_icon.png"
+                            width={32}
+                            height={32} 
                             alt="fajr_icon"
                             className="relative inline-block h-8 w-8 !rounded-full object-contain object-center p-1" 
                           />
@@ -123,7 +221,10 @@ export default function Home() {
                       <td className="border-b border-slate-200">
                         <div className="flex items-center">
                           <Image
-                            src={DhuhrIcon} alt="dhuhr_icon"
+                            src="/images/dhuhr_icon.png" 
+                            width={32}
+                            height={32} 
+                            alt="dhuhr_icon"
                             className="relative inline-block h-8 w-8 !rounded-full object-contain object-center p-1"
                           />
                           <p className="block font-sans antialiased font-bold leading-normal text-blue-gray-900">
@@ -150,7 +251,10 @@ export default function Home() {
                       <td className="border-b border-slate-200">
                         <div className="flex items-center">
                           <Image
-                            src={AsrIcon} alt="asr_icon"
+                            src="/images/asr_icon.png"
+                            width={32}
+                            height={32} 
+                            alt="asr_icon"
                             className="relative inline-block h-8 w-8 !rounded-full object-contain object-center p-1" 
                           />
                           <p className="block font-sans antialiased font-bold leading-normal text-blue-gray-900">
@@ -180,7 +284,10 @@ export default function Home() {
                       <td className="border-b border-slate-200">
                         <div className="flex items-center">
                           <Image
-                            src={MaghribIcon} alt="maghrib_icon"
+                            src="/images/maghrib_icon.png"
+                            width={32}
+                            height={32} 
+                            alt="maghrib_icon"
                             className="relative inline-block h-8 w-8 !rounded-full object-contain object-center p-1"
                           />
                           <p className="block font-sans antialiased font-bold leading-normal text-blue-gray-900">
@@ -203,7 +310,10 @@ export default function Home() {
                     <tr className="hover:bg-slate-50">
                       <td className="">
                         <div className="flex items-center">
-                          <Image src={IshaIcon} alt="isha_icon" 
+                          <Image src="/images/isha_icon.png"
+                            width={32}
+                            height={32} 
+                            alt="isha_icon" 
                             className="relative inline-block h-8 w-8 !rounded-full object-contain object-center p-1" 
                           />
                           <p className="block font-sans antialiased font-bold leading-normal text-blue-gray-900">
@@ -238,7 +348,7 @@ export default function Home() {
           </div>
       </section>
         
-      {/* Section 2 */}
+      {/* Section 2 events section info */}
       <section className="w-full py-16 bg-gray-100 text-gray-800 flex justify-center">
           <div className="max-w-4xl text-center">
             <h2 className="text-3xl font-bold mb-4">Section 2</h2>
@@ -246,7 +356,7 @@ export default function Home() {
           </div>
       </section>
         
-      {/* Section 3 */}
+      {/* Section 3 resources section info */}
       <section className="w-full py-16 bg-white text-gray-800 flex justify-center">
           <div className="max-w-4xl text-center">
             <h2 className="text-3xl font-bold mb-4">Section 3</h2>
