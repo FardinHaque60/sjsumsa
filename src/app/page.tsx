@@ -34,6 +34,8 @@ export default function Home() {
     isha: '8:45 PM'
   });
 
+  const [currentDate, setCurrentDate] = useState<string>("");
+
   // update the cache holding prayer time for today
   const updateAdhanTimesDb = async (adhanData: adhanApiInt, hanafiAsrTime: string) => {
     const prayerTimings = adhanData.timings;
@@ -108,6 +110,12 @@ export default function Home() {
 
   useEffect(() => {
     const currentDate = getCurrentPSTDate();
+    setCurrentDate(currentDate.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }))
     const todayDate = formatDate(currentDate);
     const getPrayerTimesTodayApiUrl = "api/adhanTimes?todayDate=" + todayDate;
     const prayerTimesApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ`;
@@ -161,7 +169,9 @@ export default function Home() {
       <section className="w-full py-16 bg-white text-gray-800 flex justify-center">
           <div className="max-w-4xl text-center">
 
-            <h2 className="text-3xl font-bold mb-10">Daily Prayer Info</h2>
+            <h2 className="text-3xl font-bold mb-0.1
+            ">Daily Prayer Info</h2>
+            <p className="text-xl mb-6">{currentDate}</p>
             <div className="flex flex-row items-center justify-evenly space-x-10">
 
               <div className="text-lg">
