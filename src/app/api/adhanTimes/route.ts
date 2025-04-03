@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
         }
         return NextResponse.json({ success: true,  data: adhanTimes[0] });
     } catch (error) {
-        console.error("Error retrieving adhan times:", error);
+        console.error("SERVER: error retrieving adhan times:", error);
         return NextResponse.json({ success: false, error: "Failed to fetch adhan times" }, { status: 500 });
     }
 }
@@ -29,10 +29,9 @@ export async function POST(request: Request) {
 
     try {
         await AdhanTimesModel.create(body);
-        console.log("SERVER: Adhan Time Saved");
         return NextResponse.json({message: "Adhan Time Saved Successfully"});
     } catch (error) {
-        console.error("SERVER: Error saving adhan time:", error);
+        console.error("SERVER: error saving adhan time:", error);
         return NextResponse.json({ error: "Adhan Time Failed to Save" }, { status: 400 });
     }
 }
@@ -45,10 +44,9 @@ export async function DELETE() {
         if (deleted.deletedCount === 0) {
             return NextResponse.json({ success: false });
         }
-        console.log("SERVER: Deleted all adhan times");
         return NextResponse.json({ success: true });
     } catch (error) {
-        console.error("Error deleting adhan times:", error);
-        return NextResponse.json({ success: false, error: "Failed to delete adhan times" }, { status: 500 });
+        console.error("SERVER: error deleting adhan times:", error);
+        return NextResponse.json({ success: false, error: "failed to delete adhan times" }, { status: 500 });
     }
 }

@@ -1,6 +1,3 @@
-// look into best practices for handling state variables
-// updating values and reading them after
-
 'use client';
 import './styles/styles.css'; 
 
@@ -38,8 +35,8 @@ export default function Home() {
   });
 
   // update the cache holding prayer time for today
-  const updateAdhanTimesDb = async (adhanTimes: adhanApiInt, hanafiAsrTime: string) => {
-    const prayerTimings = adhanTimes.timings;
+  const updateAdhanTimesDb = async (adhanData: adhanApiInt, hanafiAsrTime: string) => {
+    const prayerTimings = adhanData.timings;
     const adhanTimesObj = {
       fajr: prayerTimings.Fajr,
       dhuhr: prayerTimings.Dhuhr,
@@ -47,25 +44,25 @@ export default function Home() {
       hanafiAsr: hanafiAsrTime,
       maghrib: prayerTimings.Maghrib,
       isha: prayerTimings.Isha,
-      date: adhanTimes.date.gregorian.date,
+      date: adhanData.date.gregorian.date,
     } 
     try {
       const response = await axios.post("api/adhanTimes", adhanTimesObj);
-      console.log("Adhan times updated in DB:", response.data);
+      console.log("CLIENT: adhan times updated in db with result - ", response.data);
     } catch (error) {
-      console.error('Error updating adhan times in DB:', error);
+      console.error('error updating adhan times in DB:', error);
     }
   };
 
   // sets the table for prayer time state variables
-  const setPrayerTable = (prayerTimes: adhanDbInt, hanafiAsrTime: string) => {
+  const setPrayerTable = async (prayerTimes: adhanDbInt) => {
     // update state variables
     setAdhanTimes({
       ...adhanTimes,
       fajr: convertTo12HourTime(prayerTimes.fajr),
       dhuhr: convertTo12HourTime(prayerTimes.dhuhr),
       shafiAsr: convertTo12HourTime(prayerTimes.shafiAsr),
-      hanafiAsr: convertTo12HourTime(hanafiAsrTime),
+      hanafiAsr: convertTo12HourTime(prayerTimes.hanafiAsr),
       maghrib: convertTo12HourTime(prayerTimes.maghrib),
       isha: convertTo12HourTime(prayerTimes.isha)
     });
@@ -81,29 +78,31 @@ export default function Home() {
       const response = await axios.get(prayerTimesApiUrl);
       const hanafiAsrResponse = await axios.get(hanafiAsrApiUrl);
 
-      let prayerTimes = response.data.data;
+      let adhanData = response.data.data;
       const hanafiAsrTime = hanafiAsrResponse.data.data.timings.Asr;
 
       // update cache in db
       const deleteResult = await axios.delete("api/adhanTimes"); // delete old entry
       if (!deleteResult.data.success) {
-        console.error("Error deleting old adhan times from db");
+        console.error("CLIENT: error deleting old adhan times from db");
       }
-      updateAdhanTimesDb(prayerTimes, hanafiAsrTime);
+      console.log("CLIENT: old adhan times deleted from db with result - ", deleteResult.data);
+      updateAdhanTimesDb(adhanData, hanafiAsrTime);
 
       // set table render of prayer times
-      prayerTimes = prayerTimes.timings;
+      adhanData = adhanData.timings;
       const prayerTimesObj = {
-        fajr: prayerTimes.Fajr,
-        dhuhr: prayerTimes.Dhuhr,
-        shafiAsr: prayerTimes.Asr,
-        maghrib: prayerTimes.Maghrib,
-        isha: prayerTimes.Isha,
+        fajr: adhanData.Fajr,
+        dhuhr: adhanData.Dhuhr,
+        shafiAsr: adhanData.Asr,
+        hanafiAsr: hanafiAsrTime,
+        maghrib: adhanData.Maghrib,
+        isha: adhanData.Isha,
       }
-      setPrayerTable(prayerTimesObj, hanafiAsrTime);
+      setPrayerTable(prayerTimesObj);
 
     } catch (error) {
-      console.error('Error fetching prayer times from api:', error);
+      console.error('CLIENT: error fetching prayer times from api:', error);
     } 
   };
 
@@ -118,8 +117,8 @@ export default function Home() {
       const response = await axios.get(getPrayerTimesTodayApiUrl); // check db if entry for today exists
       const adhanTimesData = response.data;
       if (adhanTimesData.success) { // if entry exists, set table with response data
-        console.log("CLIENT: Loading adhan times from db");
-        setPrayerTable(adhanTimesData.data, adhanTimesData.data.hanafiAsr);
+        console.log("CLIENT: loading adhan times from db");
+        setPrayerTable(adhanTimesData.data);
       } else { // if entry does not exist fetch new entry from api
         fetchPrayerTimes(prayerTimesApiUrl, hanafiAsrApiUrl);
       }

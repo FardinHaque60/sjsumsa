@@ -36,6 +36,7 @@ export interface adhanDbInt {
     fajr: string,
     dhuhr: string,
     shafiAsr: string,
+    hanafiAsr: string,
     maghrib: string,
     isha: string,
 }
