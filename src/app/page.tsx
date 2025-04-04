@@ -9,6 +9,7 @@ import Image from "next/image";
 import { adhanTimesInt, iqamahTimesInt, adhanApiInt, adhanDbInt } from "@/interfaces/prayerTimeInt";
 import { getCurrentPSTDate, formatDate, convertTo12HourTime } from '@/lib/dates/dateHelper';
 
+import ToolTip from "@/components/Tooltip";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; // Assuming you have a Footer component
 import TowerBg from "@/assets/sjsu_tower_bg.jpg";
@@ -169,8 +170,15 @@ export default function Home() {
       <section className="w-full py-16 bg-white text-gray-800 flex justify-center">
           <div className="max-w-4xl text-center">
 
-            <h2 className="text-3xl font-bold mb-0.1
-            ">Daily Prayer Info</h2>
+            <div className="flex justify-center">
+              <h2 className="text-3xl font-bold mb-0.1">Daily Prayer Info</h2> 
+              <ToolTip text="Prayer times use the ICNA calculation">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                </svg>
+              </ToolTip> 
+            </div>
+
             <p className="text-xl mb-6">{currentDate}</p>
             <div className="flex flex-row items-center justify-evenly space-x-10">
 
