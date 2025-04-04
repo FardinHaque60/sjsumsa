@@ -7,7 +7,7 @@ import axios from 'axios';
 import Image from "next/image";
 
 import { adhanTimesInt, iqamahTimesInt, adhanApiInt, adhanDbInt } from "@/interfaces/prayerTimeInt";
-import { getCurrentPSTDate, formatDate, convertTo12HourTime } from '@/lib/dates/dateHelper';
+import { getCurrentPSTDate, formatDate, convertTo12HourTime, convertTo24HourTime } from '@/lib/dates/dateHelper';
 import { checkAdminStatus } from '@/lib/admin/adminStatus';
 
 import ToolTip from "@/components/Tooltip";
@@ -464,12 +464,6 @@ export default function Home() {
                           {adhanTimes.isha}
                         </p>
                       </td>
-<<<<<<< HEAD
-                      <td className="p-4 border-b border-slate-200">
-                        <p className="block text-slate-800">
-                          {iqamahTimes.isha}
-                        </p>
-=======
                       <td className="p-4">
                             {editingIqamah ? 
                             <input 
@@ -481,7 +475,6 @@ export default function Home() {
                             :
                             <p className="block text-slate-800">{iqamahTimes.isha}</p>
                             }
->>>>>>> 23262cb (updated client and added new date lib for convert to 24 hr time)
                       </td>
                     </tr>
 
