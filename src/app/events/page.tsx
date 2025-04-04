@@ -20,18 +20,6 @@ export default function Events() {
     }
   };
 
-export default function Home() {
-  const [events, setEvents] = useState([]);
-
-  const fetchEvents = async () => {
-    try {
-      const response = await axios.get('/api/events');
-      setEvents(response.data);
-    } catch (error) {
-      console.error("CLIENT: error fetching events:", error);
-    }
-  };
-
   useEffect(() => {
     // TODO implementing fetching events from DB
     fetchEvents();
