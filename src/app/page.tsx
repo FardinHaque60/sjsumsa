@@ -214,7 +214,7 @@ export default function Home() {
                       <td className="border-b border-slate-200">
                         <div className="flex items-center">
                           <Image
-                            src="/images/fajr_icon.png"
+                            src="/images/prayer_icons/fajr_icon.png"
                             width={32}
                             height={32} 
                             alt="fajr_icon"
@@ -241,7 +241,7 @@ export default function Home() {
                       <td className="border-b border-slate-200">
                         <div className="flex items-center">
                           <Image
-                            src="/images/dhuhr_icon.png" 
+                            src="/images/prayer_icons/dhuhr_icon.png" 
                             width={32}
                             height={32} 
                             alt="dhuhr_icon"
@@ -271,7 +271,7 @@ export default function Home() {
                       <td className="border-b border-slate-200">
                         <div className="flex items-center">
                           <Image
-                            src="/images/asr_icon.png"
+                            src="/images/prayer_icons/asr_icon.png"
                             width={32}
                             height={32} 
                             alt="asr_icon"
@@ -304,7 +304,7 @@ export default function Home() {
                       <td className="border-b border-slate-200">
                         <div className="flex items-center">
                           <Image
-                            src="/images/maghrib_icon.png"
+                            src="/images/prayer_icons/maghrib_icon.png"
                             width={32}
                             height={32} 
                             alt="maghrib_icon"
@@ -330,7 +330,7 @@ export default function Home() {
                     <tr className="hover:bg-slate-50">
                       <td className="">
                         <div className="flex items-center">
-                          <Image src="/images/isha_icon.png"
+                          <Image src="/images/prayer_icons/isha_icon.png"
                             width={32}
                             height={32} 
                             alt="isha_icon" 
