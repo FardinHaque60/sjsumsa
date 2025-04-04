@@ -6,9 +6,9 @@ import Image from "next/image";
 
 import TowerBg from "@/assets/sjsu_tower_bg.jpg";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer"; // Assuming you have a Footer component
+import Footer from "@/components/Footer";
 
-export default function Home() {
+export default function Events() {
   const [events, setEvents] = useState([]);
 
   const fetchEvents = async () => {
