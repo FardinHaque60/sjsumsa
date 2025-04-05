@@ -10,6 +10,9 @@ export default function Readme() {
         <h2 className="text-xl font-semibold mt-4">Source Code: <a href="https://github.com/FardinHaque60/sjsumsa" target="_blank" className="underline hover:text-blue-800">sjsumsa</a>
         </h2>
 
+        <h2 className="text-xl font-semibold mt-4">Contact:</h2>
+        <p>Reach out to: (TBD) for additional resources like cloud db access, etc. </p>
+
         <h2 className="text-xl font-semibold mt-4">Admin Functions:</h2>
         <p className="">
             The below items outline what an admin can do to maintain this site
