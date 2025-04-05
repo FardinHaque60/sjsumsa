@@ -22,7 +22,7 @@ export default function Readme() {
             <li className="bg-amber-100 p-4 rounded-lg">
                 <h3 className="text-lg font-semibold">Login</h3>
                 <ul className="list-disc pl-6 space-y-1 text-gray-700">
-                    <li>navigate to the <a href="/admin" className="underline hover:text-blue-800">admin portal</a> and enter the password.</li>
+                    <li>navigate to the <a href="/adminLogin" className="underline hover:text-blue-800">admin portal</a> and enter the password.</li>
                     <li>
                         you will be redirected to the homepage where you will see 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="inline-block w-4 h-4 mx-1"> 

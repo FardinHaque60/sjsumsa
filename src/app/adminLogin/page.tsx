@@ -3,7 +3,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import axios from 'axios';
 
-export default function Admin() {
+export default function AdminLogin() {
     const router = useRouter();
     const [password, setPassword] = useState("");   
     const [passwordFlag, setPasswordFlag] = useState(false);

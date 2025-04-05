@@ -12,20 +12,20 @@ export function middleware(req: NextRequest) {
 
     // Check if the request is for an API route
     if (req.nextUrl.pathname.startsWith('/api/')) {
-        return new NextResponse(
-            JSON.stringify({ message: "Unauthenticated access" }),
-            { status: 401 }
-        );
+        return NextResponse.json({ message: "Unauthenticated access" }, { status: 401 });
     }
     // if request is to a protected page, redirect to login page
-    return NextResponse.redirect(new URL('/pages/login', req.url));
+    return NextResponse.redirect(new URL('/adminLogin', req.url));
 }
 
 // Define which paths to protect
 export const config = {
     matcher: [
-        // add post api methods for events, iqamah, adhan times, etc. here
-        '/api/prayerTimes/write/:path*',
-        // add protected pages (see all archived events, etc.) 
+        // protected api routes (writing iqamah and events data)
+        '/api/prayerTimes/iqamah/write/:path*',
+        '/api/events/create/:path*',
+        // protected pages (admin panel to manage events)
+        '/readme/:path*',
+        '/admin/:path*',
     ], 
 };
