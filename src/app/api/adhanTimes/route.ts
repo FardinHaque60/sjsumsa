@@ -1,10 +1,7 @@
-// all endpoints for adhan times (cacheing result from api for the day, modifying them, etc.)
+// all endpoints for adhan times (cacheing result from api for the day,
 import AdhanTimesModel from "@/lib/models/AdhanTimesModel";
 import { ConnectDB } from "@/lib/mongodb";
 import { NextRequest, NextResponse } from 'next/server';
-//import { getBucket } from "@/lib/mongo";
-//import { Readable } from "stream";
-//import { ObjectId } from 'mongodb';
 
 // GET function to get the adhan times for today, acts as retrieving from cache
 export async function GET(req: NextRequest) {
