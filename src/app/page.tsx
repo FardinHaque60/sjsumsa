@@ -52,7 +52,7 @@ export default function Home() {
       date: adhanData.date.gregorian.date,
     } 
     try {
-      const response = await axios.post("api/adhanTimes", adhanTimesObj);
+      const response = await axios.post("api/prayerTimes/adhan", adhanTimesObj);
       console.log("CLIENT: adhan times updated in db with result - ", response.data);
     } catch (error) {
       console.error('error updating adhan times in DB:', error);
@@ -87,7 +87,7 @@ export default function Home() {
       const hanafiAsrTime = hanafiAsrResponse.data.data.timings.Asr;
 
       // update cache in db
-      const deleteResult = await axios.delete("api/adhanTimes"); // delete old entry
+      const deleteResult = await axios.delete("api/prayerTimes/adhan"); // delete old entry
       if (!deleteResult.data.success) {
         console.error("CLIENT: error deleting old adhan times from db");
       }
