@@ -13,8 +13,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; // Assuming you have a Footer component
 import TowerBg from "@/assets/sjsu_tower_bg.jpg";
 import SalamArt from "@/assets/salam_art.png"; 
+import checkAdminStatus from '@/lib/admin/adminStatus';
 
 export default function Home() {
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [adhanTimes, setAdhanTimes] = useState<adhanTimesInt>({
     fajr: "X:XX",
     dhuhr: "X:XX",
@@ -131,6 +133,9 @@ export default function Home() {
         fetchPrayerTimes(prayerTimesApiUrl, hanafiAsrApiUrl);
       }
     };
+    checkAdminStatus().then((isAdmin) => {
+      setIsAdmin(isAdmin);
+    });
 
     checkCache();
   }, []);
@@ -169,8 +174,7 @@ export default function Home() {
       <section className="w-full py-16 bg-white text-gray-800 flex justify-center">
           <div className="max-w-4xl text-center">
 
-            <h2 className="text-3xl font-bold mb-0.1
-            ">Daily Prayer Info</h2>
+            <h2 className="text-3xl font-bold mb-0.1">Daily Prayer Info</h2>
             <p className="text-xl mb-6">{currentDate}</p>
             <div className="flex flex-row items-center justify-evenly space-x-10">
 
@@ -185,14 +189,28 @@ export default function Home() {
                         </p>
                       </th>
                       <th className="p-4 border-b border-slate-300 bg-slate-50">
-                        <p className="block font-normal leading-none text-slate-500">
-                          Adhan
-                        </p>
+                        <div className="flex flex-row gap-1">
+                          <p className="block font-normal leading-none text-slate-500">
+                            Adhan
+                          </p>
+                          {isAdmin && 
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="inline-block w-4 h-4 mx-1 text-blue-700"> 
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" /> 
+                              </svg>
+                            }
+                        </div>
                       </th>
                       <th className="p-4 border-b border-slate-300 bg-slate-50">
-                        <p className="block font-normal leading-none text-slate-500">
-                          Iqamah
-                        </p>
+                        <div className="flex flex-row gap-1">
+                          <p className="block font-normal leading-none text-slate-500">
+                            Iqamah
+                          </p>
+                          {isAdmin && 
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="inline-block w-4 h-4 mx-1 text-blue-700"> 
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" /> 
+                            </svg>
+                          }
+                        </div>
                       </th>
                     </tr>
                   </thead>

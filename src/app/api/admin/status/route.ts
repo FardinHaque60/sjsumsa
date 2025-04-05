@@ -5,9 +5,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
     const cookies = req.headers.get("cookie");
 
-    // if authenticated, continue with normal request
     if (cookies?.includes("authToken=authenticated")) {
-        return NextResponse.json({status: true});
+        return NextResponse.json({authenticated: true}, {status: 200});
     }
-    return NextResponse.json({status: false});
+    return NextResponse.json({authenticated: false}, {status: 200});
 }
