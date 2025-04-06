@@ -40,7 +40,7 @@ export default function Programs() {
                   <div className="md:w-2/3">
                     <h3 className="text-xl font-semibold mb-3">MSA Weekly Arabic/Tajweed Classes</h3>
                     <p className="text-gray-700 mb-4 whitespace-pre-line">
-                      The Prophet (ﷺ) said, "The best among you (Muslims) are those who learn the Qur'an and teach it."
+                      The Prophet (ﷺ) said, &quot;The best among you (Muslims) are those who learn the Qur&apos;an and teach it.&quot;
 
                       Our Arabic classes cater to students from beginner learners to intermediate learners.
                       Class timings will be chosen to accomodate the majority of students.
@@ -48,7 +48,7 @@ export default function Programs() {
                     <div className="space-y-3">
                       <div className="flex items-start">
                         <span className="text-emerald-600 font-bold mr-2">•</span>
-                        <p><span className="font-medium">Beginner Level:</span> If you can't read Arabic yet, this is a great opportunity to learn!</p>
+                        <p><span className="font-medium">Beginner Level:</span> If you can&apos;t read Arabic yet, this is a great opportunity to learn!</p>
                       </div>
                       <div className="flex items-start">
                         <span className="text-emerald-600 font-bold mr-2">•</span>
@@ -138,6 +138,49 @@ export default function Programs() {
                 </div>
               </div>
             </section>
+
+            <section className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="bg-amber-400 p-4">
+                <h2 className="text-2xl font-bold text-white">MTC Initiatives</h2>
+              </div>
+              <div className="p-6">
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="md:w-2/3">
+                    <h3 className="text-xl font-semibold mb-3">Muslim Tech Collaborative</h3>
+                    <p className="text-gray-700 mb-4 whitespace-pre-line">
+                    The Muslim Tech Collaborative Initiative at SJSU is a plan to help bridge the gap between Muslim tech students and local Muslim tech needs. We will serve as a consulting group that works on technical projects for various different people, organizations, and businesses in our immediate community. 
+                    The MSA at SJSU is working on building up this initiative from the ground up and would like the help of the Muslim student body on campus. There will be many different roles that you can take part in as the initiative is developed. Our immediate need is for students with coding experience or students who want to gain experience through projects. 
+                    </p>
+                    <div className="mt-6">
+                      <a className="bg-amber-400 hover:bg-amber-500 text-white py-2 px-4 rounded transition duration-300"
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSca6495NQPe7q15QLkgBCJ8WWgOHiV6WjL__cv5KLw7AAQF2g/viewform"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        Get involved
+                      </a>
+                    </div>
+                  </div>
+                  <div className="md:w-1/3 h-1/3 bg-amber-50 p-6 relative top-5 rounded-lg">
+                    <h4 className="font-semibold text-lg mb-2">Why Join?</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-center">
+                        <span className="text-amber-500 mr-2">✓</span>
+                        <span>Gain great coding experience</span>
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-amber-500 mr-2">✓</span>
+                        <span>Work on projects that have impact</span>
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-amber-500 mr-2">✓</span>
+                        <span>Put it on your resume!</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+
           </div>
         </div>
       </div>
