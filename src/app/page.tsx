@@ -121,7 +121,8 @@ export default function Home() {
     }))
     const todayDate = formatDate(currentDate);
     const getPrayerTimesTodayApiUrl = "api/adhanTimes?todayDate=" + todayDate;
-    const prayerTimesApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ`;
+    const tune = `&tune=2%2C2%2C2%2C2%2C2%2C2%2C2%2C2%2C2` // tune prayer times for a two min delay in all times
+    const prayerTimesApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ${tune}`;
     const hanafiAsrApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ&school=1`
 
     const checkCache = async () => {
@@ -174,7 +175,7 @@ export default function Home() {
 
             <div className="flex justify-center">
               <h2 className="text-3xl font-bold mb-0.1">Daily Prayer Info</h2> 
-              <ToolTip text="Prayer times use the ICNA calculation">
+              <ToolTip text="Prayer times are for San Jose, CA and use the ICNA calculation">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                 </svg>
