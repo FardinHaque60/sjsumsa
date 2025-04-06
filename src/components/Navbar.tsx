@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import checkAdminStatus from '@/lib/admin/adminStatus';
+import { checkAdminStatus } from '@/lib/admin/adminStatus';
 import axios from 'axios';
 
 const Navbar: React.FC = () => {
