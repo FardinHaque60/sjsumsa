@@ -18,20 +18,21 @@ const Modal: React.FC<{
   if (!isOpen || !event) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg max-w-md w-full">
+    <div className="fixed inset-0 flex items-center justify-center">
+      <div className="z-50 bg-white p-6 rounded-lg max-w-md w-full">
         <h2 className="text-xl font-bold">{event.name}</h2>
         <p className="text-sm text-gray-500 mb-2">
           Posted: {event.postedDate} | Event: {event.eventDate}
         </p>
         <p>{event.description}</p>
         <button
-          className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+          className="mt-4 px-4 py-2 bg-red-500 text-white rounded cursor-pointer"
           onClick={onClose}
         >
           Close
         </button>
       </div>
+      <div className="fixed inset-0 bg-black opacity-80 z-40"></div>
     </div>
   );
 };
