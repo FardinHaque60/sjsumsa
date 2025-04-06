@@ -18,8 +18,8 @@ const Modal: React.FC<{
   if (!isOpen || !event) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
-      <div className="z-50 bg-white p-6 rounded-lg max-w-md w-full">
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg max-w-md w-full">
         <h2 className="text-xl font-bold">{event.name}</h2>
         <p className="text-sm text-gray-500 mb-2">
           Posted: {event.postedDate} | Event: {event.eventDate}

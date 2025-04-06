@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default async function checkAdminStatus() {
+export async function checkAdminStatus() {
     const response = await axios.get("api/admin/status", {
         withCredentials: true
     });
