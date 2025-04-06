@@ -25,7 +25,6 @@ export const config = {
         '/api/prayerTimes/iqamah/write/:path*',
         '/api/events/create/:path*',
         // protected pages (admin panel to manage events)
-        '/readme/:path*',
         '/admin/:path*',
     ], 
 };
