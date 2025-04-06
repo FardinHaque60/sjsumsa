@@ -191,7 +191,7 @@ export default function Home() {
                   <thead>
                     <tr>
                       <th className="p-4 border-b border-slate-300 bg-slate-50">
-                        <p className="pr-12 block font-normal leading-none text-slate-500">
+                        <p className="pr-10 block font-normal leading-none text-slate-500">
                           Prayer
                         </p>
                       </th>
@@ -328,7 +328,7 @@ export default function Home() {
                     </tr>
 
                     <tr className="hover:bg-slate-50">
-                      <td className="">
+                      <td className="border-b border-slate-200">
                         <div className="flex items-center">
                           <Image src="/images/prayer_icons/isha_icon.png"
                             width={32}
@@ -341,15 +341,38 @@ export default function Home() {
                           </p>
                         </div>
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 border-b border-slate-200">
                         <p className="block text-slate-800">
                           {adhanTimes.isha}
                         </p>
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 border-b border-slate-200">
                         <p className="block text-slate-800">
                           {iqamahTimes.isha}
                         </p>
+                      </td>
+                    </tr>
+
+                    <tr className="hover:bg-slate-50">
+                      <td className="">
+                        <div className="flex items-center">
+                          <Image src="/images/prayer_icons/jummah_icon.png"
+                            width={32}
+                            height={32} 
+                            alt="isha_icon" 
+                            className="relative inline-block h-8 w-8 !rounded-full object-contain object-center p-1" 
+                          />
+                          <p className="block font-sans antialiased font-bold leading-normal text-blue-gray-900">
+                            Jummah
+                          </p>
+                        </div>
+                      </td>
+                      <td className="p-4" colSpan={2}>
+                        <div className="flex justify-center">
+                          <p className="block text-slate-800">
+                          TBD
+                          </p>
+                        </div>
                       </td>
                     </tr>
 
