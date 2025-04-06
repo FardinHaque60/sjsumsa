@@ -14,6 +14,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; // Assuming you have a Footer component
 import TowerBg from "@/assets/sjsu_tower_bg.jpg";
 import SalamArt from "@/assets/salam_art.png"; 
+import Section2 from "@/components/Section2";
+import Section3 from "@/components/Section3";
 
 export default function Home() {
   const [adhanTimes, setAdhanTimes] = useState<adhanTimesInt>({
@@ -365,21 +367,32 @@ export default function Home() {
           </div>
       </section>
         
-      {/* Section 2 events section info */}
+      {/* 
+      Section 2 events section info 
       <section className="w-full py-16 bg-gray-100 text-gray-800 flex justify-center">
           <div className="max-w-4xl text-center">
             <h2 className="text-3xl font-bold mb-4">Section 2</h2>
             <p className="text-lg">section for events</p>
           </div>
       </section>
-        
-      {/* Section 3 resources section info */}
+      */}
+      <section className="w-full py-16 bg-gray-100 text-gray-800 flex justify-center">
+          <div className="w-full max-w-6xl">
+            <Section2 />
+          </div>
+      </section>
+
+      {/* 
+      Section 3 resources section info 
       <section className="w-full py-16 bg-white text-gray-800 flex justify-center">
           <div className="max-w-4xl text-center">
             <h2 className="text-3xl font-bold mb-4">Section 3</h2>
             <p className="text-lg">section for resources (roommate spreadsheet?, student handbook, etc.)</p>
           </div>
       </section>  
+      */}
+      <Section3 />
+
 
       <Footer />
     </div>
