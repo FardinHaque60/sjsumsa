@@ -1,10 +1,7 @@
-// all endpoints for adhan times (cacheing result from api for the day, modifying them, etc.)
+// read endpoint for iqamah times 
 import IqamahTimesModel from "@/lib/models/IqamahTimesModel";
 import { ConnectDB } from "@/lib/mongodb";
-import { NextResponse } from 'next/server'; // add NextRequest import if needed
-//import { getBucket } from "@/lib/mongo";
-//import { Readable } from "stream";
-//import { ObjectId } from 'mongodb';
+import { NextResponse } from 'next/server';
 
 // GET function to get all iqamah times saved from admin
 export async function GET() {
@@ -16,7 +13,7 @@ export async function GET() {
         }
         return NextResponse.json({ success: true,  data: iqamahTimes[0] });
     } catch (error) {
-        console.error("Error retrieving adhan times:", error);
-        return NextResponse.json({ success: false, error: "Failed to fetch adhan times" }, { status: 500 });
+        console.error("Error retrieving iqamah times:", error);
+        return NextResponse.json({ success: false, error: "Failed to fetch iqamah times" }, { status: 500 });
     }
 }

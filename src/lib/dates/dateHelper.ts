@@ -25,3 +25,18 @@ export function convertTo12HourTime(time: string) {
     const formattedTime = `${formattedHour}:${minute} ${period}`;
     return formattedTime;
 };
+
+// given a string in 12 hour X:XX AM/PM format, convert to 24 hour format
+export function convertTo24HourTime(time: string) {
+    const [timePart, period] = time.split(' ');
+    const [hour, minute] = timePart.split(':');
+    let intHour = parseInt(hour);
+    if (period === 'PM' && intHour !== 12) {
+        intHour += 12;
+    }
+    if (period === 'AM' && intHour === 12) {
+        intHour = 0;
+    }
+    const formattedTime = `${intHour.toString().padStart(2, '0')}:${minute}`;
+    return formattedTime;
+}

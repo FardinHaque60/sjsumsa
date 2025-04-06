@@ -7,14 +7,18 @@ import axios from 'axios';
 import Image from "next/image";
 
 import { adhanTimesInt, iqamahTimesInt, adhanApiInt, adhanDbInt } from "@/interfaces/prayerTimeInt";
-import { getCurrentPSTDate, formatDate, convertTo12HourTime } from '@/lib/dates/dateHelper';
+import { getCurrentPSTDate, formatDate, convertTo12HourTime, convertTo24HourTime } from '@/lib/dates/dateHelper';
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; // Assuming you have a Footer component
 import TowerBg from "@/assets/sjsu_tower_bg.jpg";
 import SalamArt from "@/assets/salam_art.png"; 
+import checkAdminStatus from '@/lib/admin/adminStatus';
 
 export default function Home() {
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [editingIqamah, setEditingIqamah] = useState<boolean>(false);
+  const [savingIqamah, setSavingIqamah] = useState<boolean>(false);
   const [adhanTimes, setAdhanTimes] = useState<adhanTimesInt>({
     fajr: "X:XX",
     dhuhr: "X:XX",
@@ -25,13 +29,13 @@ export default function Home() {
   });
 
   const [iqamahTimes, setIqamahTimes] = useState<iqamahTimesInt>({
-    fajr: '6:35 AM',
-    dhuhr: '1:30 PM',
-    dhuhr2: '3:00 PM',
-    shafiAsr: '5:00 PM',
-    hanafiAsr: '5:45 PM',
-    maghrib: 'XX:XX',
-    isha: '8:45 PM'
+    fajr: "X:XX",
+    dhuhr: "X:XX",
+    dhuhr2: "X:XX",
+    shafiAsr: "X:XX", 
+    hanafiAsr: "X:XX", 
+    maghrib: "X:XX",
+    isha: "X:XX" 
   });
 
   const [currentDate, setCurrentDate] = useState<string>("");
@@ -49,7 +53,7 @@ export default function Home() {
       date: adhanData.date.gregorian.date,
     } 
     try {
-      const response = await axios.post("api/adhanTimes", adhanTimesObj);
+      const response = await axios.post("api/prayerTimes/adhan", adhanTimesObj);
       console.log("CLIENT: adhan times updated in db with result - ", response.data);
     } catch (error) {
       console.error('error updating adhan times in DB:', error);
@@ -60,7 +64,6 @@ export default function Home() {
   const setPrayerTable = async (prayerTimes: adhanDbInt) => {
     // update state variables
     setAdhanTimes({
-      ...adhanTimes,
       fajr: convertTo12HourTime(prayerTimes.fajr),
       dhuhr: convertTo12HourTime(prayerTimes.dhuhr),
       shafiAsr: convertTo12HourTime(prayerTimes.shafiAsr),
@@ -68,9 +71,16 @@ export default function Home() {
       maghrib: convertTo12HourTime(prayerTimes.maghrib),
       isha: convertTo12HourTime(prayerTimes.isha)
     });
+    const iqamahTimesData = await axios.get("api/prayerTimes/iqamah/read");
+    const iqamahTimes = iqamahTimesData.data.data;
     setIqamahTimes({
-      ...iqamahTimes,
+      fajr: iqamahTimes.fajr,
+      dhuhr: iqamahTimes.dhuhr,
+      dhuhr2: iqamahTimes.dhuhr2,
+      shafiAsr: iqamahTimes.shafiAsr,
+      hanafiAsr: iqamahTimes.hanafiAsr,
       maghrib: convertTo12HourTime(prayerTimes.maghrib),
+      isha: iqamahTimes.isha
     });
   };
 
@@ -84,7 +94,7 @@ export default function Home() {
       const hanafiAsrTime = hanafiAsrResponse.data.data.timings.Asr;
 
       // update cache in db
-      const deleteResult = await axios.delete("api/adhanTimes"); // delete old entry
+      const deleteResult = await axios.delete("api/prayerTimes/adhan"); // delete old entry
       if (!deleteResult.data.success) {
         console.error("CLIENT: error deleting old adhan times from db");
       }
@@ -102,11 +112,47 @@ export default function Home() {
         isha: adhanData.Isha,
       }
       setPrayerTable(prayerTimesObj);
-
     } catch (error) {
       console.error('CLIENT: error fetching prayer times from api:', error);
     } 
   };
+
+  const handleCancelIqamahChanges = async () => {
+    // make browser alert that saves do you want to continue
+    const confirmCancel = window.confirm("Are you sure you want to cancel changes?");
+    if (!confirmCancel) {
+      return;
+    }
+    // get old iqamah times to reload back in
+    const oldIqamahTimes = await axios.get("api/prayerTimes/iqamah/read");
+    const oldIqamahTimesData = oldIqamahTimes.data.data;
+    setIqamahTimes({
+      ...oldIqamahTimesData,
+      fajr: oldIqamahTimesData.fajr,
+      dhuhr: oldIqamahTimesData.dhuhr,
+      dhuhr2: oldIqamahTimesData.dhuhr2,
+      shafiAsr: oldIqamahTimesData.shafiAsr,
+      hanafiAsr: oldIqamahTimesData.hanafiAsr,
+      isha: oldIqamahTimesData.isha
+    });
+    setEditingIqamah(false);
+  };
+
+  const handleSaveIqamahChanges = async () => {
+    setSavingIqamah(true);
+    try {
+      const response = await axios.put("api/prayerTimes/iqamah/write", iqamahTimes);
+      if (response.data.success) {
+        setSavingIqamah(false);
+        setEditingIqamah(false);
+        window.alert("Iqamah times saved successfully");
+      }
+    } catch (error) {
+      console.error('CLIENT: error saving iqamah times to api:', error);
+    } finally {
+      setSavingIqamah(false);
+    }
+  }
 
   useEffect(() => {
     const currentDate = getCurrentPSTDate();
@@ -117,7 +163,7 @@ export default function Home() {
       day: 'numeric'
     }))
     const todayDate = formatDate(currentDate);
-    const getPrayerTimesTodayApiUrl = "api/adhanTimes?todayDate=" + todayDate;
+    const getPrayerTimesTodayApiUrl = "api/prayerTimes/adhan?todayDate=" + todayDate;
     const prayerTimesApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ`;
     const hanafiAsrApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ&school=1`
 
@@ -131,6 +177,9 @@ export default function Home() {
         fetchPrayerTimes(prayerTimesApiUrl, hanafiAsrApiUrl);
       }
     };
+    checkAdminStatus().then((isAdmin) => {
+      setIsAdmin(isAdmin);
+    });
 
     checkCache();
   }, []);
@@ -169,8 +218,7 @@ export default function Home() {
       <section className="w-full py-16 bg-white text-gray-800 flex justify-center">
           <div className="max-w-4xl text-center">
 
-            <h2 className="text-3xl font-bold mb-0.1
-            ">Daily Prayer Info</h2>
+            <h2 className="text-3xl font-bold mb-0.1">Daily Prayer Info</h2>
             <p className="text-xl mb-6">{currentDate}</p>
             <div className="flex flex-row items-center justify-evenly space-x-10">
 
@@ -185,14 +233,48 @@ export default function Home() {
                         </p>
                       </th>
                       <th className="p-4 border-b border-slate-300 bg-slate-50">
-                        <p className="block font-normal leading-none text-slate-500">
-                          Adhan
-                        </p>
+                        <div className="flex flex-row gap-1">
+                          <p className="block font-normal leading-none text-slate-500">
+                            Adhan
+                          </p>
+                        </div>
                       </th>
                       <th className="p-4 border-b border-slate-300 bg-slate-50">
-                        <p className="block font-normal leading-none text-slate-500">
-                          Iqamah
-                        </p>
+                        <div className="flex flex-row gap-1">
+                          <p className="block font-normal leading-none text-slate-500">
+                            Iqamah
+                          </p>
+                          {isAdmin &&
+                            (editingIqamah ?
+                              (!savingIqamah ?
+                                <div className="flex flex-row gap-1">
+                                  <svg onClick={handleSaveIqamahChanges} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 text-green-500 cursor-pointer">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                  </svg>
+                                  <svg onClick={handleCancelIqamahChanges} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 text-red-500 cursor-pointer">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                  </svg>
+                                </div> 
+                                
+                              :
+                              <div className="grid ml-2 place-items-center overflow-x-scroll rounded-lg lg:overflow-visible">
+                                <svg className="text-gray-300 animate-spin" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                  width="20" height="20">
+                                  <path
+                                  d="M32 3C35.8083 3 39.5794 3.75011 43.0978 5.20749C46.6163 6.66488 49.8132 8.80101 52.5061 11.4939C55.199 14.1868 57.3351 17.3837 58.7925 20.9022C60.2499 24.4206 61 28.1917 61 32C61 35.8083 60.2499 39.5794 58.7925 43.0978C57.3351 46.6163 55.199 49.8132 52.5061 52.5061C49.8132 55.199 46.6163 57.3351 43.0978 58.7925C39.5794 60.2499 35.8083 61 32 61C28.1917 61 24.4206 60.2499 20.9022 58.7925C17.3837 57.3351 14.1868 55.199 11.4939 52.5061C8.801 49.8132 6.66487 46.6163 5.20749 43.0978C3.7501 39.5794 3 35.8083 3 32C3 28.1917 3.75011 24.4206 5.2075 20.9022C6.66489 17.3837 8.80101 14.1868 11.4939 11.4939C14.1868 8.80099 17.3838 6.66487 20.9022 5.20749C24.4206 3.7501 28.1917 3 32 3L32 3Z"
+                                  stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                  <path
+                                  d="M32 3C36.5778 3 41.0906 4.08374 45.1692 6.16256C49.2477 8.24138 52.7762 11.2562 55.466 14.9605C58.1558 18.6647 59.9304 22.9531 60.6448 27.4748C61.3591 31.9965 60.9928 36.6232 59.5759 40.9762"
+                                  stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900">
+                                  </path>
+                                </svg>
+                              </div>)
+                            :
+                              <svg onClick={() => setEditingIqamah(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="inline-block size-4 mx-1 text-blue-700 cursor-pointer"> 
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" /> 
+                              </svg>)
+                          }
+                        </div>
                       </th>
                     </tr>
                   </thead>
@@ -220,9 +302,16 @@ export default function Home() {
                         </p>
                       </td>
                       <td className="p-4 border-b border-slate-200">
-                        <p className="block text-slate-800">
-                          {iqamahTimes.fajr}
-                        </p>
+                            {editingIqamah ? 
+                            <input 
+                              type="time" 
+                              value={convertTo24HourTime(iqamahTimes.fajr)} 
+                              onChange={(e) => setIqamahTimes({ ...iqamahTimes, fajr: convertTo12HourTime(e.target.value) })} 
+                              className="border border-gray-300 rounded-md p-1 cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            :
+                            <p className="block text-slate-800">{iqamahTimes.fajr}</p>
+                            }
                       </td>
                     </tr>
 
@@ -247,12 +336,27 @@ export default function Home() {
                         </p>
                       </td>
                       <td className="p-4 border-b border-slate-200">
-                        <p className="block text-slate-800">
-                          {iqamahTimes.dhuhr}
-                        </p>
-                        <p className="block text-slate-800">
-                          {iqamahTimes.dhuhr2}
-                        </p>
+                            {editingIqamah ? 
+                            <div className="flex flex-col">
+                              <input 
+                                type="time" 
+                                value={convertTo24HourTime(iqamahTimes.dhuhr)} 
+                                onChange={(e) => setIqamahTimes({ ...iqamahTimes, dhuhr: convertTo12HourTime(e.target.value) })} 
+                                className="border border-gray-300 rounded-md p-1 cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                              <input 
+                                type="time" 
+                                value={convertTo24HourTime(iqamahTimes.dhuhr2)} 
+                                onChange={(e) => setIqamahTimes({ ...iqamahTimes, dhuhr2: convertTo12HourTime(e.target.value) })} 
+                                className="border border-gray-300 rounded-md p-1 cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            </div>
+                            :
+                            <>
+                              <p className="block text-slate-800">{iqamahTimes.dhuhr}</p>
+                              <p className="block text-slate-800">{iqamahTimes.dhuhr2}</p>
+                            </>
+                            }
                       </td>
                     </tr>
 
@@ -280,12 +384,27 @@ export default function Home() {
                         </p>
                       </td>
                       <td className="p-4 border-b border-slate-200">
-                        <p className="block text-slate-800">
-                          {iqamahTimes.shafiAsr} (Shafi)
-                        </p>
-                        <p className="block text-slate-800">
-                          {iqamahTimes.hanafiAsr} (Hanafi)
-                        </p>
+                            {editingIqamah ? 
+                            <div className="flex flex-col">
+                              <input 
+                                type="time" 
+                                value={convertTo24HourTime(iqamahTimes.shafiAsr)} 
+                                onChange={(e) => setIqamahTimes({ ...iqamahTimes, shafiAsr: convertTo12HourTime(e.target.value) })} 
+                                className="border border-gray-300 rounded-md p-1 cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                              <input 
+                                type="time" 
+                                value={convertTo24HourTime(iqamahTimes.hanafiAsr)} 
+                                onChange={(e) => setIqamahTimes({ ...iqamahTimes, hanafiAsr: convertTo12HourTime(e.target.value) })} 
+                                className="border border-gray-300 rounded-md p-1 cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            </div>
+                            :
+                            <>
+                              <p className="block text-slate-800">{iqamahTimes.shafiAsr} (Shafi)</p>
+                              <p className="block text-slate-800">{iqamahTimes.hanafiAsr} (Hanafi)</p>
+                            </>
+                            }
                       </td>
                     </tr>
 
@@ -310,9 +429,7 @@ export default function Home() {
                         </p>
                       </td>
                       <td className="p-4 border-b border-slate-200">
-                        <p className="block text-slate-800">
-                          {iqamahTimes.maghrib}
-                        </p>
+                        <p className="block text-slate-800">{iqamahTimes.maghrib}</p>
                       </td>
                     </tr>
 
@@ -336,9 +453,16 @@ export default function Home() {
                         </p>
                       </td>
                       <td className="p-4">
-                        <p className="block text-slate-800">
-                          {iqamahTimes.isha}
-                        </p>
+                            {editingIqamah ? 
+                            <input 
+                              type="time" 
+                              value={convertTo24HourTime(iqamahTimes.isha)} 
+                              onChange={(e) => setIqamahTimes({ ...iqamahTimes, isha: convertTo12HourTime(e.target.value) })} 
+                              className="border border-gray-300 rounded-md p-1 cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            :
+                            <p className="block text-slate-800">{iqamahTimes.isha}</p>
+                            }
                       </td>
                     </tr>
 

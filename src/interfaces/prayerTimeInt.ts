@@ -10,7 +10,7 @@ export interface adhanTimesInt {
 export interface iqamahTimesInt {
     fajr: string,
     dhuhr: string,
-    dhuhr2?: string, // TODO mark optional?
+    dhuhr2: string,
     shafiAsr: string,
     hanafiAsr: string,
     maghrib: string,
