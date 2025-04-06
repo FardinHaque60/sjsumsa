@@ -8,6 +8,7 @@ const IqamahTimesSchema = new mongoose.Schema({
     hanafiAsr: { type: String, required: true }, 
     maghrib: { type: String, required: true },
     isha: { type: String, required: true },
+    jummah: { type: String, required: true },
     date: { type: Date, default: Date.now },
 });
 

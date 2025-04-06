@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import Image from "next/image";
 
-import { adhanTimesInt, iqamahTimesInt, adhanApiInt, adhanDbInt } from "@/interfaces/prayerTimeInt";
+import { adhanTimesInt, iqamahTimesInt, adhanApiInt } from "@/interfaces/prayerTimeInt";
 import { getCurrentPSTDate, formatDate, convertTo12HourTime, convertTo24HourTime } from '@/lib/dates/dateHelper';
 import { checkAdminStatus } from '@/lib/admin/adminStatus';
 
@@ -38,7 +38,8 @@ export default function Home() {
     shafiAsr: "X:XX", 
     hanafiAsr: "X:XX", 
     maghrib: "X:XX",
-    isha: "X:XX" 
+    isha: "X:XX",
+    jummah: "X:XX"
   });
 
   const [currentDate, setCurrentDate] = useState<string>("");
@@ -64,7 +65,7 @@ export default function Home() {
   };
 
   // sets the table for prayer time state variables
-  const setPrayerTable = async (prayerTimes: adhanDbInt) => {
+  const setPrayerTable = async (prayerTimes: adhanTimesInt) => {
     // update state variables
     setAdhanTimes({
       fajr: convertTo12HourTime(prayerTimes.fajr),
@@ -83,7 +84,8 @@ export default function Home() {
       shafiAsr: iqamahTimes.shafiAsr,
       hanafiAsr: iqamahTimes.hanafiAsr,
       maghrib: convertTo12HourTime(prayerTimes.maghrib),
-      isha: iqamahTimes.isha
+      isha: iqamahTimes.isha,
+      jummah: iqamahTimes.jummah
     });
   };
 
@@ -166,7 +168,7 @@ export default function Home() {
       day: 'numeric'
     }))
     const todayDate = formatDate(currentDate);
-    const getPrayerTimesTodayApiUrl = "api/adhanTimes?todayDate=" + todayDate;
+    const getPrayerTimesTodayApiUrl = "api/prayerTimes/adhan?todayDate=" + todayDate;
     const tune = `&tune=2%2C2%2C2%2C2%2C2%2C2%2C2%2C2%2C2` // tune prayer times for a two min delay in all times
     const prayerTimesApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ${tune}`;
     const hanafiAsrApiUrl = `https://api.aladhan.com/v1/timingsByCity/${todayDate}?city=San%Jose&country=USA&method=2&shafaq=general&calendarMethod=UAQ&school=1`
@@ -464,7 +466,7 @@ export default function Home() {
                           {adhanTimes.isha}
                         </p>
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 border-b border-slate-200">
                             {editingIqamah ? 
                             <input 
                               type="time" 
@@ -494,9 +496,16 @@ export default function Home() {
                       </td>
                       <td className="p-4" colSpan={2}>
                         <div className="flex justify-center">
-                          <p className="block text-slate-800">
-                          TBD
-                          </p>
+                            {editingIqamah ? 
+                            <input 
+                              type="time" 
+                              value={convertTo24HourTime(iqamahTimes.jummah)} 
+                              onChange={(e) => setIqamahTimes({ ...iqamahTimes, jummah: convertTo12HourTime(e.target.value) })} 
+                              className="border border-gray-300 rounded-md p-1 cursor-pointer hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            :
+                            <p className="block text-slate-800">{iqamahTimes.jummah}</p>
+                            }
                         </div>
                       </td>
                     </tr>
