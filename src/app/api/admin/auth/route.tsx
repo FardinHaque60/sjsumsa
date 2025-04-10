@@ -23,7 +23,7 @@ export async function POST(request: Request) {
                 }
             });
         } 
-        return NextResponse.json({success: false}, { status: 401 });
+        return NextResponse.json({success: false});
     } catch (error) {
         console.log("SERVER: error occurred handling admin password", error);
         return NextResponse.json({ success: false }, { status: 500 });

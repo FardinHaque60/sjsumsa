@@ -15,9 +15,9 @@ export async function GET(req: NextRequest) {
     try {
         const adhanTimes = await AdhanTimesModel.find({ date: todayDate });
         if (adhanTimes.length === 0) {
-            return NextResponse.json({ success: false, error: "No adhan times found for today" }, { status: 404 });
+            return NextResponse.json({ success: false, error: "No adhan times found for today" });
         }
-        return NextResponse.json({ success: true,  data: adhanTimes[0] }), { status: 200 };
+        return NextResponse.json({ success: true,  data: adhanTimes[0] }, { status: 200 });
     } catch (error) {
         console.error("SERVER: error retrieving adhan times:", error);
         return NextResponse.json({ success: false, error: "Failed to fetch adhan times" }, { status: 500 });
@@ -25,12 +25,18 @@ export async function GET(req: NextRequest) {
 }
 
 // POST function to add to adhanTimes to database, used when prayer times on website is outdated and updates from api
-export async function POST(request: Request) {
+export async function PUT(request: Request) {
     await ConnectDB();
     const body = await request.json();
 
     try {
-        await AdhanTimesModel.create(body);
+        const adhanTime = await AdhanTimesModel.findOne();
+        if (!adhanTime) {
+            return NextResponse.json({ status: false, error: "No Adhan Time Not Found" }, { status: 404 });
+        }
+        Object.assign(adhanTime, body);
+        await adhanTime.save();
+
         return NextResponse.json({message: "Adhan Time Saved Successfully"}, { status: 200 });
     } catch (error) {
         console.error("SERVER: error saving adhan time:", error);
@@ -38,7 +44,7 @@ export async function POST(request: Request) {
     }
 }
 
-// DELETE function to remove all entries in adhanTimes. used before new adhan time is added to cache to clear old entries
+// DELETE function to remove all entries in adhanTimes. 
 export async function DELETE() {
     await ConnectDB();
     try {

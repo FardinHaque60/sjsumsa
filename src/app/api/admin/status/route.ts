@@ -8,5 +8,5 @@ export async function GET(req: NextRequest) {
     if (cookies?.includes("authToken=authenticated")) {
         return NextResponse.json({authenticated: true}, {status: 200});
     }
-    return NextResponse.json({authenticated: false}, {status: 401});
+    return NextResponse.json({authenticated: false});
 }
