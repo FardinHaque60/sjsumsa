@@ -7,12 +7,17 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
     await ConnectDB(); 
     const todayDate = req.nextUrl.searchParams.get("todayDate") || "";
+
+    if (todayDate === "") {
+        return NextResponse.json({ success: false, error: "todayDate is required" }, { status: 400 });
+    }
+
     try {
         const adhanTimes = await AdhanTimesModel.find({ date: todayDate });
         if (adhanTimes.length === 0) {
-            return NextResponse.json({ success: false });
+            return NextResponse.json({ success: false, error: "No adhan times found for today" }, { status: 404 });
         }
-        return NextResponse.json({ success: true,  data: adhanTimes[0] });
+        return NextResponse.json({ success: true,  data: adhanTimes[0] }), { status: 200 };
     } catch (error) {
         console.error("SERVER: error retrieving adhan times:", error);
         return NextResponse.json({ success: false, error: "Failed to fetch adhan times" }, { status: 500 });
@@ -26,7 +31,7 @@ export async function POST(request: Request) {
 
     try {
         await AdhanTimesModel.create(body);
-        return NextResponse.json({message: "Adhan Time Saved Successfully"});
+        return NextResponse.json({message: "Adhan Time Saved Successfully"}, { status: 200 });
     } catch (error) {
         console.error("SERVER: error saving adhan time:", error);
         return NextResponse.json({ error: "Adhan Time Failed to Save" }, { status: 400 });
@@ -39,9 +44,9 @@ export async function DELETE() {
     try {
         const deleted = await AdhanTimesModel.deleteMany({});
         if (deleted.deletedCount === 0) {
-            return NextResponse.json({ success: false });
+            return NextResponse.json({ success: false }, { status: 404 });
         }
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true }, { status: 200 });
     } catch (error) {
         console.error("SERVER: error deleting adhan times:", error);
         return NextResponse.json({ success: false, error: "failed to delete adhan times" }, { status: 500 });
