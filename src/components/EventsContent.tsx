@@ -1,23 +1,11 @@
+import '../app/styles/events.css';
 import React, { useEffect, useState } from "react";
 
 import Modal from "@/components/Modal";
-import '../app/styles/events.css';
-
-// Event type definition
-type EventType = {
-  id: number;
-  name: string;
-  postedDate: string;
-  eventDate: string;
-  eventTime: string;
-  link?: string;
-  location?: string;
-  note?: string;
-  description: string;
-};
+import { EventInt } from "@/interfaces/eventInt";
 
 const EventsContent: React.FC = () => {
-  const [events, setEvents] = useState<EventType[]>([
+  const [events, setEvents] = useState<EventInt[]>([
     {
       id: 0,
       name: "XXX",
@@ -27,13 +15,13 @@ const EventsContent: React.FC = () => {
       description: "XXX",
     },
   ]);
-  const [selectedEvent, setSelectedEvent] = useState<EventType>(events[0]);
+  const [selectedEvent, setSelectedEvent] = useState<EventInt>(events[0]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   //DB and API rough draft stuff
   useEffect(() => {
     const fetchEvents = async () => {
-      const mockData: EventType[] = [
+      const mockData: EventInt[] = [
         {
           id: 1,
           name: "Students Iftar",
@@ -54,6 +42,28 @@ const EventsContent: React.FC = () => {
           location: "Student Center",
           note: "Bring your own Quran.",
         },
+        {
+          id: 3,
+          name: "Quran Khatem",
+          postedDate: "04/20/2025",
+          eventDate: "04/20/2025",
+          eventTime: "2:00 PM",
+          link: "https://example.com",
+          description: "Join at the Student Center for a community iftar.",
+          location: "Student Center",
+          note: "Bring your own Quran.",
+        },
+        {
+          id: 4,
+          name: "Quran Khatem",
+          postedDate: "04/20/2025",
+          eventDate: "04/20/2025",
+          eventTime: "2:00 PM",
+          link: "https://example.com",
+          description: "Join at the Student Center for a community iftar.",
+          location: "Student Center",
+          note: "Bring your own Quran.",
+        },
       ];
       //sort order by time
       const sorted = mockData.sort(
@@ -65,7 +75,7 @@ const EventsContent: React.FC = () => {
     fetchEvents();
   }, []);
 
-  const handleCardClick = (event: EventType) => {
+  const handleCardClick = (event: EventInt) => {
     setSelectedEvent(event);
     setIsModalOpen(true);
   };
@@ -86,19 +96,19 @@ const EventsContent: React.FC = () => {
 
         <div
           id="event-container"
-          className="flex overflow-x-scroll gap-4 scroll-smooth no-scrollbar"
+          className="flex overflow-x-scroll gap-4 scroll-smooth no-scrollbar py-2"
         >
           {events.map((event) => (
             <div
               key={event.id}
-              className="w-79.25 flex-shrink-0 bg-white rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition"
+              className="w-79.25 flex-shrink-0 bg-white rounded-lg shadow-md p-4 cursor-pointer event-hover-animation"
               style={{ scrollSnapAlign: "start" }}
               onClick={() => handleCardClick(event)}
             >
               <h3 className="font-semibold text-lg mb-2">
-                {event.name.length > 50
-                  ? `${event.name.slice(0, 50)}...`
-                  : event.name}</h3>
+              {event.name.length > 50
+                ? `${event.name.slice(0, 50)}...`
+                : event.name}</h3>
               <p className="text-md text-gray-700">Date: {event.eventDate}</p>
               <p className="text-md text-gray-700">Time: {event.eventTime}</p>
             </div>

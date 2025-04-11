@@ -8,3 +8,11 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.event-hover-animation {
+  transition: transform 0.2s;
+}
+
+.event-hover-animation:hover {
+  transform: translateY(-0.5em);
+}
