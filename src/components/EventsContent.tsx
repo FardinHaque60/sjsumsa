@@ -109,7 +109,7 @@ export default function EventsContent({ isAdmin }: { isAdmin: boolean }) {
       <div className="relative px-5">
         {/* left arrow */}
         {events.length > 3 && (<button
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-300 px-2 py-1 rounded-full shadow-md cursor-pointer hover:bg-gray-400 transition z-10"
+          className="hidden lg:flex absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-300 px-2 py-1 rounded-full shadow-md cursor-pointer hover:bg-gray-400 transition z-10"
           onClick={() => {
             const container = document.getElementById("event-container");
             if (container) container.scrollBy({ left: -333, behavior: "smooth" });
@@ -120,7 +120,7 @@ export default function EventsContent({ isAdmin }: { isAdmin: boolean }) {
 
         <div
           id="event-container"
-          className="flex overflow-x-scroll gap-4 scroll-smooth no-scrollbar py-2"
+          className="flex flex-wrap lg:flex-nowrap justify-center lg:justify-start overflow-x-scroll gap-4 scroll-smooth no-scrollbar py-2"
         >
           {events.length === 0 ?
             <p className="text-gray-500">No events at the moment. Check back soon!</p>
@@ -153,7 +153,7 @@ export default function EventsContent({ isAdmin }: { isAdmin: boolean }) {
 
         {/* right arrow */}
         {events.length > 3 && (<button
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-300 px-2 py-1 rounded-full shadow-md cursor-pointer hover:bg-gray-400 transition z-10"
+          className="hidden lg:flex absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-300 px-2 py-1 rounded-full shadow-md cursor-pointer hover:bg-gray-400 transition z-10"
           onClick={() => {
             const container = document.getElementById("event-container");
             if (container) container.scrollBy({ left: 333, behavior: "smooth" });
@@ -165,7 +165,7 @@ export default function EventsContent({ isAdmin }: { isAdmin: boolean }) {
       </div>
 
       <Modal isOpen={createEventSelected}>
-        <div className="flex flex-col bg-white p-6 rounded-lg z-60 min-w-2xl">
+        <div className="flex flex-col bg-white p-6 rounded-lg z-60">
           <div className="flex flex-row justify-center">
             <h2 className="text-3xl font-bold mb-4">Create Event</h2>
             <ToolTip text="Link, location, and notes fields are optional. Leave them blank to exclude them.">

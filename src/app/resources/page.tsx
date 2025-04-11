@@ -24,8 +24,8 @@ export default function Resources() {
         </div>
         
         {/* Resources Information */}
-        <div className="w-full flex items-start justify-center py-8">
-          <p className="text-lg">insert resources information here (prayer room location, student handbook, roomate finder, etc.)</p>
+        <div className="flex justify-center p-8">
+          <p className="text-lg text-center">insert resources information here (prayer room location, student handbook, roomate finder, etc.)</p>
         </div>
       </div>
 

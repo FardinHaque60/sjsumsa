@@ -61,7 +61,7 @@ export default function Home() {
 
         <Image
           src={SalamArt} alt="Salam Art"
-          className="absolute top-7/23 right-10 z-20 w-1/3 max-w-sm hidden sm:block"
+          className="absolute top-7/23 right-10 z-20 w-1/3 max-w-sm hidden md:block"
         />
       </div>
 
@@ -79,16 +79,12 @@ export default function Home() {
           </div>
 
           <p className="text-xl mb-6">{displayDate}</p>
-          <div className="flex flex-row items-center justify-evenly space-x-10">
-
+          <div className="flex flex-col sm:flex-row items-center sm:space-x-10 sm:overflow-x-auto">
             <PrayerTable isAdmin={isAdmin} />
 
-            <div className="items-start border-l border-gray-300 h-64"></div>
-
-            <div className="flex flex-col items-start text-left">
-              <h2 className="text-2xl">Prayer Location</h2>
-              <p className="text-left">Prayer space available in BBC 001 (Women&apos;s) & 002 (Men&apos;s)</p>
-
+            <div className="flex flex-col items-start mt-6 mx-5 sm:mt-0 sm:mx-0">
+            <h2 className="text-2xl">Prayer Location</h2>
+            <p className="text-left">Prayer space available in BBC 001 (Women&apos;s) & 002 (Men&apos;s)</p>
             </div>
           </div>
         </div>
