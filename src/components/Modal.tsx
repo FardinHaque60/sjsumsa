@@ -1,3 +1,5 @@
+import '../app/styles/modal.css'
+
 interface ModalProps {
   children: React.ReactNode;
   isOpen: boolean;
@@ -9,7 +11,9 @@ const Modal: React.FC<ModalProps> = ({ children, isOpen }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="z-60 animation-zoomIn">
         {children}
+      </div>
       <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
     </div>
   );

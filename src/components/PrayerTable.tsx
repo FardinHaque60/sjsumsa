@@ -198,7 +198,6 @@ export default function PrayerTable({ isAdmin }: { isAdmin: boolean }) {
                           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                         </svg>
                       </div>
-
                       :
                       <div className="grid ml-2 place-items-center overflow-x-scroll rounded-lg lg:overflow-visible">
                         <svg className="text-gray-300 animate-spin" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"

@@ -96,10 +96,7 @@ export default function Home() {
 
       {/* events section info */}
       <section className="w-full py-16 bg-gray-100 text-gray-800 flex justify-center">
-          <div className="max-w-5xl text-center">
-            <h2 className="text-3xl font-bold mb-8">Events</h2>
-            <EventsContent />
-          </div>
+        <EventsContent isAdmin={isAdmin}/>
       </section>
 
       {/* resources section info */}
@@ -110,7 +107,7 @@ export default function Home() {
             Useful links and resources to help students succeed and connect
           </p>
 
-            <ul className="space-y-6">
+          <ul className="space-y-6">
             {/* Student Handbook */}
             <li>
               <a
