@@ -9,7 +9,7 @@ const IqamahTimesSchema = new mongoose.Schema({
     maghrib: { type: String, required: true },
     isha: { type: String, required: true },
     jummah: { type: String, required: true },
-    date: { type: Date, default: Date.now },
+    date: { type: String, required: true },
 });
 
 const IqamahTimesModel = mongoose.models.iqamahTimes || mongoose.model('iqamahTimes', IqamahTimesSchema);
