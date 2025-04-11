@@ -21,6 +21,43 @@ export default function Home() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [displayDate, setDisplayDate] = useState<string>("");
 
+  const handleCancelIqamahChanges = async () => {
+    // make browser alert that saves do you want to continue
+    const confirmCancel = window.confirm("Are you sure you want to cancel changes?");
+    if (!confirmCancel) {
+      return;
+    }
+    // get old iqamah times to reload back in
+    const oldIqamahTimes = await axios.get("api/prayerTimes/iqamah/read");
+    const oldIqamahTimesData = oldIqamahTimes.data.data;
+    setIqamahTimes({
+      ...oldIqamahTimesData,
+      fajr: oldIqamahTimesData.fajr,
+      dhuhr: oldIqamahTimesData.dhuhr,
+      dhuhr2: oldIqamahTimesData.dhuhr2,
+      shafiAsr: oldIqamahTimesData.shafiAsr,
+      hanafiAsr: oldIqamahTimesData.hanafiAsr,
+      isha: oldIqamahTimesData.isha
+    });
+    setEditingIqamah(false);
+  };
+
+  const handleSaveIqamahChanges = async () => {
+    setSavingIqamah(true);
+    try {
+      const response = await axios.put("api/prayerTimes/iqamah/write", iqamahTimes);
+      if (response.data.success) {
+        setSavingIqamah(false);
+        setEditingIqamah(false);
+        window.alert("Iqamah times saved successfully");
+      }
+    } catch (error) {
+      console.error('CLIENT: error saving iqamah times to api:', error);
+    } finally {
+      setSavingIqamah(false);
+    }
+  }
+
   useEffect(() => {
     const currentDate = getCurrentPSTDate();
     setDisplayDate(currentDate.toLocaleDateString('en-US', {
