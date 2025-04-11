@@ -23,7 +23,7 @@ export const config = {
     matcher: [
         // protected api routes (writing iqamah and events data)
         '/api/prayerTimes/iqamah/write/:path*',
-        '/api/events/create/:path*',
+        '/api/events/write/:path*',
         // protected pages (admin panel to manage events)
         '/admin/:path*',
     ], 
