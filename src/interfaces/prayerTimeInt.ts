@@ -14,7 +14,8 @@ export interface iqamahTimesInt {
     shafiAsr: string,
     hanafiAsr: string,
     maghrib: string,
-    isha: string
+    isha: string,
+    jummah: string,
 };
 
 export interface adhanApiInt {
@@ -30,13 +31,4 @@ export interface adhanApiInt {
             date: string,
         }
     }
-}
-
-export interface adhanDbInt {
-    fajr: string,
-    dhuhr: string,
-    shafiAsr: string,
-    hanafiAsr: string,
-    maghrib: string,
-    isha: string,
 }

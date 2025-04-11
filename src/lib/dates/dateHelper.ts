@@ -8,12 +8,15 @@ export function getCurrentPSTDate() {
 // returns data object DD-MM-YYYY format for api
 export function formatDate(date: Date) {
     const stringDate = date.toISOString().split('T')[0];
-    const dateParts = stringDate.split('-');
-    const day = dateParts[2];
-    const month = dateParts[1];
-    const year = dateParts[0];
+    const [year, month, day] = stringDate.split('-');
     const formattedDate = `${day}-${month}-${year}`;
 
+    return formattedDate;
+};
+
+export function convertToDateWithSlashes(date: string) {
+    const [year, month, day] = date.split('-');
+    const formattedDate = `${month}/${day}/${year}`;
     return formattedDate;
 };
 
