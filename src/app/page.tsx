@@ -111,7 +111,7 @@ export default function Home() {
             {/* Student Handbook */}
             <li>
               <a
-                href="https://sjsumsa.org/handbook.pdf"
+                href="/msa_handbook.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 underline text-xl"
