@@ -25,12 +25,12 @@ export default function Readme() {
                     <li>navigate to the <a href="/adminLogin" className="underline hover:text-blue-800">admin portal</a> and enter the password.</li>
                     <li>
                         you will be redirected to the homepage where you will see 
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="inline-block w-4 h-4 mx-1"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="inline-block w-4 h-4 mx-1 text-blue-700"> 
                             <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" /> 
                         </svg>
                         icons. this indicates those fields are editable.
                     </li>
-                    <p>Note: all changes you save will be effectively immediately.</p>
+                    <p>Note: all changes you save will be effective immediately.</p>
                 </ul>
             </li>
 
@@ -52,7 +52,14 @@ export default function Readme() {
                 <h3 className="text-lg font-semibold">Create/ Delete Events</h3>
                 <ul className="list-disc pl-6 space-y-1 text-gray-700">
                     <li>ensure you are logged in as admin (see above)</li>
-                    <li>coming soon...</li>
+                    <li>
+                      scroll down to the events section on the homage where you wil find the
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="inline-block size-6 text-green-400 mx-0.5 pb-1">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                      </svg>
+                      icon. click it to add a new event.
+                    </li>
+                    <li>hit the delete button on any event to delete it.</li>
                 </ul>
             </li>
         </ul>
