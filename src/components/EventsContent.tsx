@@ -139,12 +139,12 @@ export default function EventsContent({ isAdmin }: { isAdmin: boolean }) {
                       : event.name}</h3>
                   <p className="text-md text-gray-700">Date: {event.eventDate}</p>
                   <p className="text-md text-gray-700">Time: {event.eventTime}</p>
-                  <button
+                  {isAdmin && <button
                     className="mt-2 px-4 py-2 w-full bg-red-500 text-white rounded cursor-pointer hover:bg-red-600 transition"
                     onClick={(e) => handleDeleteEvent(e, event)}
                   >
                     Delete
-                  </button>
+                  </button>}
                 </div>
               ))}
             </>
