@@ -20,7 +20,9 @@ export default function About() {
 
           <Navbar />
 
-          <h1 className="z-20 text-amber-50 text-4xl sm:text-5xl lg:text-6xl font-bold mb-8">About</h1>
+          <h1 className="z-20 text-amber-50 text-4xl sm:text-5xl lg:text-6xl font-bold mb-8 text-center px-4">
+            About
+          </h1>
         </div>
         
         {/* msa description */}
@@ -34,7 +36,7 @@ export default function About() {
                 />
               </div>
               <div className="w-full md:w-1/2 px-8">
-                <h2 className="text-3xl font-bold mb-4">What is the SJSU MSA?</h2>
+                <h2 className="text-3xl font-bold mb-4 mt-4 md:mt-0">What is the SJSU MSA?</h2>
                 <p className="text-lg">
                 The Muslim Student Association of San Jose State University is dedicated to building an awesome environment of brotherhood and sisterhood on campus
                 through social, religious, interfaith, educational and outreach events. Our goal is to promote the true, balanced message of Islam within ourselves 

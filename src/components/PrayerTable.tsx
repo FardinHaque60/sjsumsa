@@ -166,7 +166,7 @@ export default function PrayerTable({ isAdmin }: { isAdmin: boolean }) {
 
   return (
     <div className="text-lg">
-      <table className="w-full text-left table-auto min-w-max">
+      <table className="text-left sm:min-w-max">
 
         <thead>
           <tr>
