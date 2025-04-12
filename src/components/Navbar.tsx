@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import checkAdminStatus from '@/lib/admin/adminStatus';
+import { checkAdminStatus } from '@/lib/admin/adminStatus';
 import axios from 'axios';
 
 const Navbar: React.FC = () => {
@@ -39,7 +39,6 @@ const Navbar: React.FC = () => {
                 </div>
 
                 <ul className="flex space-x-8 pr-8">
-                <li><a href="/events" className="text-black hover:text-gray-900 text-lg">Events</a></li>
                 <li><a href="/programs" className="text-black hover:text-gray-900 text-lg">Programs</a></li>
                 <li><a href="/resources" className="text-black hover:text-gray-900 text-lg">Resources</a></li>
                 <li><a href="/about" className="text-black hover:text-gray-900 text-lg">About</a></li>

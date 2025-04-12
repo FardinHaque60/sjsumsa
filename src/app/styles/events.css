@@ -1,0 +1,20 @@
+/* Hide scrollbar for Chrome, Safari and Opera */
+#event-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* hide scrollbar for IE, Edge and Firefox */
+#event-container {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.event-hover-animation {
+  transition: transform 0.2s;
+}
+
+.event-hover-animation:hover {
+  transform: translateY(-0.5em);
+}
