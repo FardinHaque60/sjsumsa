@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import EventModel from "@/lib/models/EventModel";
+import { ConnectDB } from '@/lib/mongodb';
 
 // GET all events
 export async function GET() {
+    await ConnectDB();
     try {
       const events = await EventModel.find({})
         .sort({ eventDate: -1 })
