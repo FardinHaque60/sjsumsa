@@ -32,13 +32,13 @@ export default function Home() {
   const slides = [{
     title: "Welcome to SJSU MSA",
     content: (
-      <p className = "text-lg sm:text-xl lg:text-2xl">
+      <p className="text-lg sm:text-xl lg:text-2xl">
         <a href="https://www.google.com/maps/place/SJSU/@37.3351874,-121.8834954,834m/data=!3m2!1e3!4b1!4m6!3m5!1s0x808fccb864de43d5:0x397ffe721937340e!8m2!3d37.3351874!4d-121.8810715!16zL20vMDIxOTk2?entry=ttu&g_ep=EgoyMDI1MDMyNS4xIKXMDSoASAFQAw%3D%3D" target="_blank" className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-            </svg> One Washington Square, San Jose, CA 95192
-          </a>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+          </svg> One Washington Square, San Jose, CA 95192
+        </a>
       </p>
     )
   },
@@ -49,9 +49,9 @@ export default function Home() {
         <p className="text-lg sm:text-xl lg:text-2xl mb-4">
           Join us for exciting events throughout the semester!
         </p>
-        <button 
-          onClick={() => scrollToSection('events-section')} 
-          className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300"
+        <button
+          onClick={() => scrollToSection('events-section')}
+          className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg"
         >
           View Events
         </button>
@@ -65,16 +65,16 @@ export default function Home() {
         <p className="text-lg sm:text-xl lg:text-2xl mb-4">
           Check out resources and programs to get involved
         </p>
-        <button 
-          onClick={() => scrollToSection('resources-section')} 
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300"
+        <button
+          onClick={() => scrollToSection('resources-section')}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
         >
           Explore Resources
         </button>
       </div>
     )
   }
-];
+  ];
 
   useEffect(() => {
     const currentDate = getCurrentPSTDate();
@@ -108,29 +108,41 @@ export default function Home() {
 
         <Navbar />
 
-        <div className="text-amber-50 absolute top-1/3 left-8 z-20 transition-opacity duration-500">
-        {slides.map((slide, index) => (
-          <div 
-            key={index} 
-            className={`transition-opacity duration-1000 ${
-              currentSlide === index 
-                ? "opacity-100 relative z-10" 
+        <div className="text-amber-50 absolute top-1/3 left-8 z-20 transition-opacity w-full h-100">
+          {/* OLD ANIMATION 
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`transition-opacity duration-1000 ${currentSlide === index
+                ? "opacity-100 relative z-10"
                 : "opacity-0 absolute top-0 left-0 -z-10 pointer-events-none"
-            }`}
-          >
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">{slide.title}</h1>
-            {slide.content}
-          </div>
-        ))}
+                }`}
+            >
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">{slide.title}</h1>
+              {slide.content}
+            </div>
+          ))}*/}
 
-          <div className="flex space-x-2 mt-6">
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`transition-all duration-1000 pr-10 ${currentSlide === index
+                  ? "translate-x-0 opacity-100 absolute"
+                  : " -translate-x-full opacity-0 absolute"
+                }`}
+            >
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">{slide.title}</h1>
+              {slide.content}
+            </div>
+          ))}
+
+          <div className="flex space-x-2 absolute bottom-20">
             {slides.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                  currentSlide === index ? "bg-white" : "bg-gray-400"
-                }`}
+                className={`w-3 h-3 rounded-full transition-colors duration-300 cursor-pointer ${currentSlide === index ? "bg-white" : "bg-gray-400"
+                  }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
@@ -161,8 +173,8 @@ export default function Home() {
             <PrayerTable isAdmin={isAdmin} />
 
             <div className="flex flex-col items-start mt-6 mx-5 sm:mt-0 sm:mx-0">
-            <h2 className="text-2xl">Prayer Location</h2>
-            <p className="text-left">Prayer space available in BBC 001 (Women&apos;s) & 002 (Men&apos;s)</p>
+              <h2 className="text-2xl">Prayer Location</h2>
+              <p className="text-left">Prayer space available in BBC 001 (Women&apos;s) & 002 (Men&apos;s)</p>
             </div>
           </div>
         </div>
@@ -170,11 +182,11 @@ export default function Home() {
 
       {/* events section info */}
       <section id="events-section" className="w-full py-16 bg-gray-100 text-gray-800 flex justify-center scroll-mt-16">
-        <EventsContent isAdmin={isAdmin}/>
+        <EventsContent isAdmin={isAdmin} />
       </section>
 
       {/* resources section info */}
-      <section id = "resources-section" className="w-full py-16 bg-white text-gray-800 flex justify-center scroll-mt-16">
+      <section id="resources-section" className="w-full py-16 bg-white text-gray-800 flex justify-center scroll-mt-16">
         <div className="max-w-4xl text-center">
           <h2 className="text-3xl font-bold mb-6">Student Resources</h2>
           <p className="text-lg mb-5">
@@ -226,18 +238,6 @@ export default function Home() {
                 className="text-blue-600 underline text-xl"
               >
                 🌲 Check out our linktree for more!
-              </a>
-            </li>
-
-            {/* Restaurants Nearby */}
-            <li>
-              <p className="text-xl font-semibold">🍽️ Restaurants Nearby:</p>
-              <a
-                href="https://www.google.com/maps/search/halal+restaurants+near+SJSU/"
-                target="_blank"
-                className="text-blue-600 underline block"
-              >
-                View Halal Restaurants on Google Maps
               </a>
             </li>
           </ul>
