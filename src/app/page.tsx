@@ -4,7 +4,6 @@ import './styles/styles.css';
 import { useEffect, useState } from 'react';
 
 import Image from "next/image";
-import Link from "next/link";
 
 import { getCurrentPSTDate } from '@/lib/dates/dateHelper';
 import { checkAdminStatus } from '@/lib/admin/adminStatus';
@@ -52,7 +51,7 @@ export default function Home() {
         </p>
         <button 
           onClick={() => scrollToSection('events-section')} 
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300"
         >
           View Events
         </button>
@@ -95,7 +94,7 @@ export default function Home() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [slides.length]);
 
   return (
     <div>
