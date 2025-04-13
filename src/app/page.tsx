@@ -109,20 +109,6 @@ export default function Home() {
         <Navbar />
 
         <div className="text-amber-50 absolute top-1/3 left-8 z-20 transition-opacity w-full h-100">
-          {/* OLD ANIMATION 
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              className={`transition-opacity duration-1000 ${currentSlide === index
-                ? "opacity-100 relative z-10"
-                : "opacity-0 absolute top-0 left-0 -z-10 pointer-events-none"
-                }`}
-            >
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">{slide.title}</h1>
-              {slide.content}
-            </div>
-          ))}*/}
-
           {slides.map((slide, index) => (
             <div
               key={index}
