@@ -43,7 +43,6 @@ const Navbar: React.FC = () => {
         {/* desktop navbar options */}
         <ul className="hidden sm:flex space-x-8 pr-8">
           <li><a href="/programs" className="text-black hover:text-gray-900 text-lg">Programs</a></li>
-          <li><a href="/resources" className="text-black hover:text-gray-900 text-lg">Resources</a></li>
           <li><a href="/about" className="text-black hover:text-gray-900 text-lg">About</a></li>
           {isAdmin &&
             <button
@@ -86,7 +85,6 @@ const Navbar: React.FC = () => {
           <div className={`absolute top-16 right-0 bg-white shadow-lg rounded-lg p-4 ${isOpen ? 'block' : 'hidden'}`}>
             <ul className="space-y-4">
               <li><a href="/programs" className="text-black hover:text-gray-900 text-lg">Programs</a></li>
-              <li><a href="/resources" className="text-black hover:text-gray-900 text-lg">Resources</a></li>
               <li><a href="/about" className="text-black hover:text-gray-900 text-lg">About</a></li>
               {isAdmin &&
                 <button
