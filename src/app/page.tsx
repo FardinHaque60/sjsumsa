@@ -12,6 +12,7 @@ import ToolTip from "@/components/Tooltip";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PrayerTable from "@/components/PrayerTable";
+import Modal from '@/components/Modal';
 
 import TowerBg from "@/assets/sjsu_tower_bg.jpg";
 import SalamArt from "@/assets/salam_art.png";
@@ -21,6 +22,7 @@ export default function Home() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [displayDate, setDisplayDate] = useState<string>("");
   const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [prayerRoomVideoOpen, setPrayerRoomVideoOpen] = useState<boolean>(false);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -113,8 +115,8 @@ export default function Home() {
             <div
               key={index}
               className={`transition-all duration-1000 pr-10 ${currentSlide === index
-                  ? "translate-x-0 opacity-100 absolute"
-                  : " -translate-x-full opacity-0 absolute"
+                ? "translate-x-0 opacity-100 absolute"
+                : " -translate-x-full opacity-0 absolute"
                 }`}
             >
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">{slide.title}</h1>
@@ -161,6 +163,10 @@ export default function Home() {
             <div className="flex flex-col items-start mt-6 mx-5 sm:mt-0 sm:mx-0">
               <h2 className="text-2xl">Prayer Location</h2>
               <p className="text-left">Prayer space available in BBC 001 (Women&apos;s) & 002 (Men&apos;s)</p>
+              <br></br>
+              <p onClick={() => setPrayerRoomVideoOpen(true)} className="text-blue-600 underline text-lg cursor-pointer">
+                Video Directions
+              </p>
             </div>
           </div>
         </div>
@@ -231,6 +237,26 @@ export default function Home() {
       </section>
 
       <Footer />
+
+      <Modal isOpen={prayerRoomVideoOpen}>
+        <div className="flex flex-col bg-white rounded-lg max-w-3xl">
+          <svg
+            onClick={() => setPrayerRoomVideoOpen(false)}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6 cursor-pointer self-end mr-2 mt-2 mb-1"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+          <video controls preload="metadata" className="w-80 h-auto px-6 pb-6">
+            <source src="/prayer_room_location.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </Modal>
     </div>
   );
 }
