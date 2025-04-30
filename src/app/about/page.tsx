@@ -5,6 +5,20 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; // Assuming you have a Footer component
 
 export default function About() {
+  const firstRowMembers = [
+    { name: "Mahmoud", role: "President", image: "/images/board_members/president.png" },
+    { name: "Aasiya", role: "Vice President", image: "/images/board_members/vice-president.png" },
+    { name: "Jihad", role: "Secretary", image: "/images/board_members/secretary.png" },
+    { name: "Faqeha", role: "Finance Director", image: "/images/board_members/finance-director.png" }
+  ];
+
+  const secondRowMembers = [
+    { name: "Reha", role: "Sisters Director", image: "/images/board_members/sisters-director.png" },
+    { name: "Yusuf", role: "Brothers Director", image: "/images/board_members/brothers-director.png" },
+    { name: "Shahd", role: "Co-Marketing Director",image: "/images/board_members/co-marketing-director.png" },
+    { name: "Shifa", role: "Co-Marketing Director", image: "/images/board_members/co-marketing-director2.png" }
+  ];
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Main content */}
@@ -53,43 +67,41 @@ export default function About() {
               <h2 className="text-3xl font-bold mb-8 text-center">MSA Board Members</h2>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-8">
                 {/* First row: 4 members */}
-                {["Board Member 1", "Board Member 2", "Board Member 3", "Board Member 4"].map((role, index) => (
+                {firstRowMembers.map((member, index) => (
                   <div key={index} className="flex flex-col items-center">
-                    <div className="w-24 h-24 p-1 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                    <div className="w-24 h-24 rounded-full bg-gray-300 overflow-hidden">
                       <Image
-                        src="/images/board_members/Jordan_Poole.png"
-                        alt="Board Member"
+                        src={member.image}
+                        alt={member.name}
                         width={96}
                         height={96}
                         className="object-cover w-full h-full"
                       />
                     </div>
-                    <p className="mt-4 text-lg font-medium">{role}</p>
+                    <p className="mt-4 text-sm font-medium text-blue-600">{member.role}</p>
+                    <p className="mt-0.25 text-lg font-medium">{member.name}</p>
                   </div>
                 ))}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                {/* Second row: 3 members */}
-                {["Board Member 5", "Board Member 6", "Board Member 7"].map((role, index) => (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+                {/* Second row: 4 members */}
+                {secondRowMembers.map((member, index) => (
                   <div key={index} className="flex flex-col items-center">
-                    <div className="w-24 h-24 p-1 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                    <div className="w-24 h-24 rounded-full bg-gray-300 overflow-hidden">
                       <Image
-                        src="/images/board_members/Jordan_Poole.png"
-                        alt="Board Member"
+                        src={member.image}
+                        alt={member.name}
                         width={96}
                         height={96}
                         className="object-cover w-full h-full"
                       />
                     </div>
-                    <p className="mt-4 text-lg font-medium">{role}</p>
+                    <p className="mt-4 text-sm font-medium text-blue-600">{member.role}</p>
+                    <p className="mt-0.25 text-lg font-medium">{member.name}</p>
                   </div>
                 ))}
               </div>
             </div>
-            {/* <div className="max-w-4xl text-center">
-              <h2 className="text-3xl font-bold mb-4">Section 3</h2>
-              <p className="text-lg">section for resources (roommate spreadsheet?, student handbook, etc.)</p>
-            </div> */}
         </section> 
       </div>
 

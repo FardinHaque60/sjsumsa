@@ -1,8 +1,6 @@
 import Link from 'next/link';
 
 const Footer: React.FC = () => {
-    const currentYear = new Date().getFullYear();
-
     return (
         <div className="flex flex-col items-center justify-end p-8 bg-gray-100 border-t border-gray-300 space-y-4 min-h-[150px] w-full bottom-0 left-0">
             <div className="flex space-x-4">
@@ -25,7 +23,7 @@ const Footer: React.FC = () => {
                     </span>
                 </Link>
             </div>
-            <span className="text-sm text-gray-600">© {currentYear} SJSU Muslim Tech Collaborative</span>
+            <span className="text-sm text-gray-600">Made with ♡ by SJSU MTC</span>
         </div>
     );
 }
