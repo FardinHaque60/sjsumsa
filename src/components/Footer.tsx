@@ -25,6 +25,7 @@ const Footer: React.FC = () => {
                     </span>
                 </Link>
             </div>
+            <span className="text-sm text-gray-600">Made with ♡ by SJSU MTC</span>
             <span className="text-sm text-gray-600">© {currentYear} SJSU Muslim Tech Collaborative</span>
         </div>
     );
