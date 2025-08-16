@@ -210,18 +210,7 @@ export default function Home() {
               </a>
             </li>
 
-            {/* Quran a thon */}
-            <li>
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSeMtbaMDbQ56_ixWt18SyocqBSbP0WZFMY7AJYeydy6l_2smg/viewform"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline text-xl"
-              >
-                📖 Quran A Thon Recitor Form
-              </a>
-            </li>
-
+            {/* Linktree */}
             <li>
               <a
                 href="https://linktr.ee/SJSUMSA"
